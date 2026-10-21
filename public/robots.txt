@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /channel/feed
+Disallow: /api/
+
+Sitemap: https://yonder-test-site.terminalvelocityai.tech/sitemap.xml

@@ -1,0 +1,1549 @@
+{
+  "meta": {
+    "brand": "Saltmarsh Hotel (test bot)",
+    "diagram": "Saltmarsh Hotel website chatbot - Registered route",
+    "version": "1.0",
+    "flow_id": "registered",
+    "page_title": "Registered route",
+    "entry": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+    "entry_label": "hi",
+    "page_order": 2,
+    "restart_keywords": [
+      "hi",
+      "hello",
+      "menu",
+      "start",
+      "restart"
+    ],
+    "fallback_text": "Sorry, I did not understand that. Please choose one of the options below.",
+    "annotations": [],
+    "format": "read back from the generated Lucid CSV",
+    "depth": 4,
+    "safety_filter": "the walker's own source",
+    "safety_pattern": "yes|confirm|submit|proceed|continue|accept|agree|sign\\s*up|register|join|activate|link|unlink|replace|cancel|delete|remove|close|order|request|apply|buy|pay|checkout|physical\\s*card|virtual\\s*card|new\\s*card|update|change|edit|save|manage|already\\s+a\\s+member|use\\s+another|enter\\s*now|enter\\s+(?:the\\s+)?(?:competition|comp|draw|raffle)|claim|redeem|opt[\\s-]*in|opt[\\s-]*out|subscribe|unsubscribe|decline|reject|i\\s*do\\s*not\\s*accept|i\\s*don.t\\s*accept|sim|aceitar|aceito|aceite|concordar|concordo|confirmar|confirmo|continuar|continuo|prosseguir|avan[cç]ar|enviar|submeter|cadastrar|cadastro|registrar|registar|inscrever|inscri[cç][aã]o|assinar|ativar|activar|desativar|desactivar|vincular|desvincular|associar|desassociar|cancelar|excluir|apagar|remover|encerrar|fechar|desistir|comprar|pagar|pagamento|pedido|solicitar|encomendar|atualizar|actualizar|alterar|editar|salvar|guardar|gerir|gerenciar|trocar|substituir|novo\\s*cart[aã]o|cart[aã]o\\s*(?:f[ií]sico|virtual)|participar|concorrer|resgatar|reivindicar|inscrever[\\s-]*se|li\\s*e\\s*aceito|j[aá]\\s*sou\\s*membro|usar\\s*outro|recusar|recuso|recuse|rejeitar|rejeito|rejeite|n[aã]o\\s*aceito"
+  },
+  "root": "37",
+  "tree": {
+    "(root)": [
+      "Book a room",
+      "Reserve a table",
+      "My bookings"
+    ],
+    "Book a room": [
+      "Standard",
+      "Sea View"
+    ],
+    "Book a room > Standard": [
+      "Book it",
+      "Change dates",
+      "Main menu"
+    ],
+    "Book a room > Standard > Main menu": [],
+    "Book a room > Sea View": [
+      "Book it",
+      "Change dates",
+      "Main menu"
+    ],
+    "Book a room > Sea View > Main menu": [],
+    "My bookings": [
+      "Talk to reception",
+      "Main menu"
+    ],
+    "My bookings > Main menu": []
+  },
+  "steps": [
+    {
+      "id": "1",
+      "name": "Book a room",
+      "trail": [],
+      "action": "select",
+      "input": "Book a room",
+      "expected_reply": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+      "node": "39",
+      "placeholder": false,
+      "via": [
+        "room_dates"
+      ],
+      "status": "expected",
+      "note": "the bot does not offer another menu straight after this: room_dates come first, and every one of them needs a typed value"
+    },
+    {
+      "id": "1.2",
+      "name": "Standard",
+      "trail": [
+        "Book a room"
+      ],
+      "action": "select",
+      "input": "Standard",
+      "expected_reply": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+      "node": "46",
+      "placeholder": false,
+      "via": [],
+      "status": "expected"
+    },
+    {
+      "id": "1.2.3",
+      "name": "Book it",
+      "trail": [
+        "Book a room",
+        "Standard"
+      ],
+      "action": "select",
+      "input": "Book it",
+      "expected_reply": "Booked. Your reference is SH-2041 and the confirmation is in your email. Send \"menu\" to start again.",
+      "node": "48",
+      "placeholder": false,
+      "via": [
+        "room_booked"
+      ],
+      "status": "expected",
+      "note": "the bot does not offer another menu straight after this: room_booked come first, and every one of them needs a typed value"
+    },
+    {
+      "id": "1.2.3",
+      "name": "Change dates",
+      "trail": [
+        "Book a room",
+        "Standard"
+      ],
+      "action": "select",
+      "input": "Change dates",
+      "expected_reply": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+      "node": "39",
+      "placeholder": false,
+      "via": [
+        "room_dates"
+      ],
+      "status": "expected-skipped",
+      "note": "the bot does not offer another menu straight after this: room_dates come first, and every one of them needs a typed value",
+      "blocked": "the walker will not tap this: the label matches its safety filter, so tapping would act on the real account behind the number"
+    },
+    {
+      "id": "1.2.3",
+      "name": "Main menu",
+      "trail": [
+        "Book a room",
+        "Standard"
+      ],
+      "action": "select",
+      "input": "Main menu",
+      "expected_reply": "Welcome back, {first_name}. What would you like to do today?",
+      "node": "37",
+      "placeholder": false,
+      "via": [],
+      "status": "expected-navigation"
+    },
+    {
+      "id": "1.2",
+      "name": "Sea View",
+      "trail": [
+        "Book a room"
+      ],
+      "action": "select",
+      "input": "Sea View",
+      "expected_reply": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+      "node": "46",
+      "placeholder": false,
+      "via": [],
+      "status": "expected"
+    },
+    {
+      "id": "1.2.3",
+      "name": "Book it",
+      "trail": [
+        "Book a room",
+        "Sea View"
+      ],
+      "action": "select",
+      "input": "Book it",
+      "expected_reply": "Booked. Your reference is SH-2041 and the confirmation is in your email. Send \"menu\" to start again.",
+      "node": "48",
+      "placeholder": false,
+      "via": [
+        "room_booked"
+      ],
+      "status": "expected",
+      "note": "the bot does not offer another menu straight after this: room_booked come first, and every one of them needs a typed value"
+    },
+    {
+      "id": "1.2.3",
+      "name": "Change dates",
+      "trail": [
+        "Book a room",
+        "Sea View"
+      ],
+      "action": "select",
+      "input": "Change dates",
+      "expected_reply": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+      "node": "39",
+      "placeholder": false,
+      "via": [
+        "room_dates"
+      ],
+      "status": "expected-skipped",
+      "note": "the bot does not offer another menu straight after this: room_dates come first, and every one of them needs a typed value",
+      "blocked": "the walker will not tap this: the label matches its safety filter, so tapping would act on the real account behind the number"
+    },
+    {
+      "id": "1.2.3",
+      "name": "Main menu",
+      "trail": [
+        "Book a room",
+        "Sea View"
+      ],
+      "action": "select",
+      "input": "Main menu",
+      "expected_reply": "Welcome back, {first_name}. What would you like to do today?",
+      "node": "37",
+      "placeholder": false,
+      "via": [],
+      "status": "expected-navigation"
+    },
+    {
+      "id": "1",
+      "name": "Reserve a table",
+      "trail": [],
+      "action": "select",
+      "input": "Reserve a table",
+      "expected_reply": "Please enter the day, time and number of people (for example Fri 19:30, 4 people).",
+      "node": "50",
+      "placeholder": false,
+      "via": [
+        "table_details"
+      ],
+      "status": "expected",
+      "note": "the bot does not offer another menu straight after this: table_details come first, and every one of them needs a typed value"
+    },
+    {
+      "id": "1",
+      "name": "My bookings",
+      "trail": [],
+      "action": "select",
+      "input": "My bookings",
+      "expected_reply": "You have 1 booking: SH-2041, Sea View room, 12 Dec, 2 nights.",
+      "node": "54",
+      "placeholder": false,
+      "via": [],
+      "status": "expected"
+    },
+    {
+      "id": "1.2",
+      "name": "Talk to reception",
+      "trail": [
+        "My bookings"
+      ],
+      "action": "select",
+      "input": "Talk to reception",
+      "expected_reply": "A receptionist will reply here shortly. Reception is staffed from 07:00 to 21:00.",
+      "node": "56",
+      "placeholder": false,
+      "via": [],
+      "status": "expected"
+    },
+    {
+      "id": "1.2",
+      "name": "Main menu",
+      "trail": [
+        "My bookings"
+      ],
+      "action": "select",
+      "input": "Main menu",
+      "expected_reply": "Welcome back, {first_name}. What would you like to do today?",
+      "node": "37",
+      "placeholder": false,
+      "via": [],
+      "status": "expected-navigation"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": 1,
+      "name": "room_booked",
+      "path": [
+        "35",
+        "37",
+        "39",
+        "40",
+        "42",
+        "46",
+        "48"
+      ],
+      "conditions": [
+        "Yes"
+      ],
+      "selects": [
+        "Book a room",
+        "Standard",
+        "Book it"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book a room",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "12 Dec, 2 nights",
+          "node": "39"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "Yes",
+          "on": "Is a room free for those dates?",
+          "node": "40"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_choice",
+          "text": "Rooms free for those dates: Standard R1450 or Sea View R2100 a night. Which would you like?",
+          "node": "42",
+          "buttons": [
+            "Standard",
+            "Sea View"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Standard",
+          "node": "42"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_review",
+          "text": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+          "node": "46",
+          "buttons": [
+            "Book it",
+            "Change dates",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book it",
+          "node": "46"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_booked",
+          "text": "Booked. Your reference is SH-2041 and the confirmation is in your email. Send \"menu\" to start again.",
+          "node": "48",
+          "buttons": [],
+          "replies": [],
+          "placeholder": false
+        }
+      ],
+      "outcome": "ends here",
+      "terminal_view": "room_booked",
+      "terminal_kind": "input",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 2,
+      "name": "room_dates",
+      "path": [
+        "35",
+        "37",
+        "39",
+        "40",
+        "42",
+        "46",
+        "39"
+      ],
+      "conditions": [
+        "Yes"
+      ],
+      "selects": [
+        "Book a room",
+        "Standard",
+        "Change dates"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book a room",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "12 Dec, 2 nights",
+          "node": "39"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "Yes",
+          "on": "Is a room free for those dates?",
+          "node": "40"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_choice",
+          "text": "Rooms free for those dates: Standard R1450 or Sea View R2100 a night. Which would you like?",
+          "node": "42",
+          "buttons": [
+            "Standard",
+            "Sea View"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Standard",
+          "node": "42"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_review",
+          "text": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+          "node": "46",
+          "buttons": [
+            "Book it",
+            "Change dates",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Change dates",
+          "node": "46"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to room_dates",
+      "terminal_view": "room_dates",
+      "terminal_kind": "input",
+      "walkable": false,
+      "blocked_by": [
+        {
+          "code": "sensitive-button",
+          "detail": "the walker will not tap `Change dates` - its safety filter treats that label as acting on the real account behind the number"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "welcome_back",
+      "path": [
+        "35",
+        "37",
+        "39",
+        "40",
+        "42",
+        "46",
+        "37"
+      ],
+      "conditions": [
+        "Yes"
+      ],
+      "selects": [
+        "Book a room",
+        "Standard",
+        "Main menu"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book a room",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "12 Dec, 2 nights",
+          "node": "39"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "Yes",
+          "on": "Is a room free for those dates?",
+          "node": "40"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_choice",
+          "text": "Rooms free for those dates: Standard R1450 or Sea View R2100 a night. Which would you like?",
+          "node": "42",
+          "buttons": [
+            "Standard",
+            "Sea View"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Standard",
+          "node": "42"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_review",
+          "text": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+          "node": "46",
+          "buttons": [
+            "Book it",
+            "Change dates",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Main menu",
+          "node": "46"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to welcome_back",
+      "terminal_view": "welcome_back",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 4,
+      "name": "room_booked",
+      "path": [
+        "35",
+        "37",
+        "39",
+        "40",
+        "42",
+        "46",
+        "48"
+      ],
+      "conditions": [
+        "Yes"
+      ],
+      "selects": [
+        "Book a room",
+        "Sea View",
+        "Book it"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book a room",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "12 Dec, 2 nights",
+          "node": "39"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "Yes",
+          "on": "Is a room free for those dates?",
+          "node": "40"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_choice",
+          "text": "Rooms free for those dates: Standard R1450 or Sea View R2100 a night. Which would you like?",
+          "node": "42",
+          "buttons": [
+            "Standard",
+            "Sea View"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Sea View",
+          "node": "42"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_review",
+          "text": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+          "node": "46",
+          "buttons": [
+            "Book it",
+            "Change dates",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book it",
+          "node": "46"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_booked",
+          "text": "Booked. Your reference is SH-2041 and the confirmation is in your email. Send \"menu\" to start again.",
+          "node": "48",
+          "buttons": [],
+          "replies": [],
+          "placeholder": false
+        }
+      ],
+      "outcome": "ends here",
+      "terminal_view": "room_booked",
+      "terminal_kind": "input",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 5,
+      "name": "room_dates",
+      "path": [
+        "35",
+        "37",
+        "39",
+        "40",
+        "42",
+        "46",
+        "39"
+      ],
+      "conditions": [
+        "Yes"
+      ],
+      "selects": [
+        "Book a room",
+        "Sea View",
+        "Change dates"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book a room",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "12 Dec, 2 nights",
+          "node": "39"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "Yes",
+          "on": "Is a room free for those dates?",
+          "node": "40"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_choice",
+          "text": "Rooms free for those dates: Standard R1450 or Sea View R2100 a night. Which would you like?",
+          "node": "42",
+          "buttons": [
+            "Standard",
+            "Sea View"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Sea View",
+          "node": "42"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_review",
+          "text": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+          "node": "46",
+          "buttons": [
+            "Book it",
+            "Change dates",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Change dates",
+          "node": "46"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to room_dates",
+      "terminal_view": "room_dates",
+      "terminal_kind": "input",
+      "walkable": false,
+      "blocked_by": [
+        {
+          "code": "sensitive-button",
+          "detail": "the walker will not tap `Change dates` - its safety filter treats that label as acting on the real account behind the number"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "welcome_back",
+      "path": [
+        "35",
+        "37",
+        "39",
+        "40",
+        "42",
+        "46",
+        "37"
+      ],
+      "conditions": [
+        "Yes"
+      ],
+      "selects": [
+        "Book a room",
+        "Sea View",
+        "Main menu"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book a room",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "12 Dec, 2 nights",
+          "node": "39"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "Yes",
+          "on": "Is a room free for those dates?",
+          "node": "40"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_choice",
+          "text": "Rooms free for those dates: Standard R1450 or Sea View R2100 a night. Which would you like?",
+          "node": "42",
+          "buttons": [
+            "Standard",
+            "Sea View"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Sea View",
+          "node": "42"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "room_review",
+          "text": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+          "node": "46",
+          "buttons": [
+            "Book it",
+            "Change dates",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Main menu",
+          "node": "46"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to welcome_back",
+      "terminal_view": "welcome_back",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 7,
+      "name": "room_dates",
+      "path": [
+        "35",
+        "37",
+        "39",
+        "40",
+        "44",
+        "39"
+      ],
+      "conditions": [
+        "No"
+      ],
+      "selects": [
+        "Book a room",
+        "Change dates"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book a room",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "12 Dec, 2 nights",
+          "node": "39"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "No",
+          "on": "Is a room free for those dates?",
+          "node": "40"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "no_rooms",
+          "text": "Sorry, we are fully booked on those dates.",
+          "node": "44",
+          "buttons": [
+            "Change dates",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Change dates",
+          "node": "44"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to room_dates",
+      "terminal_view": "room_dates",
+      "terminal_kind": "input",
+      "walkable": false,
+      "blocked_by": [
+        {
+          "code": "sensitive-button",
+          "detail": "the walker will not tap `Change dates` - its safety filter treats that label as acting on the real account behind the number"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "welcome_back",
+      "path": [
+        "35",
+        "37",
+        "39",
+        "40",
+        "44",
+        "37"
+      ],
+      "conditions": [
+        "No"
+      ],
+      "selects": [
+        "Book a room",
+        "Main menu"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Book a room",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "room_dates",
+          "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+          "node": "39",
+          "buttons": [],
+          "replies": [
+            "12 Dec, 2 nights"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "12 Dec, 2 nights",
+          "node": "39"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "No",
+          "on": "Is a room free for those dates?",
+          "node": "40"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "no_rooms",
+          "text": "Sorry, we are fully booked on those dates.",
+          "node": "44",
+          "buttons": [
+            "Change dates",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Main menu",
+          "node": "44"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to welcome_back",
+      "terminal_view": "welcome_back",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 9,
+      "name": "table_reserved",
+      "path": [
+        "35",
+        "37",
+        "50",
+        "52"
+      ],
+      "conditions": [],
+      "selects": [
+        "Reserve a table"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Reserve a table",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "table_details",
+          "text": "Please enter the day, time and number of people (for example Fri 19:30, 4 people).",
+          "node": "50",
+          "buttons": [],
+          "replies": [
+            "Fri 19:30, 4 people"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "Fri 19:30, 4 people",
+          "node": "50"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "table_reserved",
+          "text": "Your table at The Saltmarsh Grill is reserved. Your reference is GR-118. Send \"menu\" to start again.",
+          "node": "52",
+          "buttons": [],
+          "replies": [],
+          "placeholder": false
+        }
+      ],
+      "outcome": "ends here",
+      "terminal_view": "table_reserved",
+      "terminal_kind": "input",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 10,
+      "name": "reception",
+      "path": [
+        "35",
+        "37",
+        "54",
+        "56"
+      ],
+      "conditions": [],
+      "selects": [
+        "My bookings",
+        "Talk to reception"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "My bookings",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "my_bookings",
+          "text": "You have 1 booking: SH-2041, Sea View room, 12 Dec, 2 nights.",
+          "node": "54",
+          "buttons": [
+            "Talk to reception",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Talk to reception",
+          "node": "54"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "reception",
+          "text": "A receptionist will reply here shortly. Reception is staffed from 07:00 to 21:00.",
+          "node": "56",
+          "buttons": [],
+          "replies": [],
+          "placeholder": false
+        }
+      ],
+      "outcome": "ends here",
+      "terminal_view": "reception",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 11,
+      "name": "welcome_back",
+      "path": [
+        "35",
+        "37",
+        "54",
+        "37"
+      ],
+      "conditions": [],
+      "selects": [
+        "My bookings",
+        "Main menu"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+          "node": "35"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "My bookings",
+          "node": "37"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "my_bookings",
+          "text": "You have 1 booking: SH-2041, Sea View room, 12 Dec, 2 nights.",
+          "node": "54",
+          "buttons": [
+            "Talk to reception",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Main menu",
+          "node": "54"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "welcome_back",
+          "text": "Welcome back, {first_name}. What would you like to do today?",
+          "node": "37",
+          "buttons": [
+            "Book a room",
+            "Reserve a table",
+            "My bookings"
+          ],
+          "replies": [],
+          "placeholder": true,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to welcome_back",
+      "terminal_view": "welcome_back",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    }
+  ],
+  "entry_points": [
+    {
+      "node": "35",
+      "label": "hi",
+      "text": "hi",
+      "kind": "menu-option",
+      "how": "a button on another page's menu",
+      "keywords": [],
+      "walk_as": [],
+      "walkable": true,
+      "why": "reached by tapping `hi` on another page's menu",
+      "entry_label": "hi",
+      "entry_from": null,
+      "first_menu": [
+        "Book a room",
+        "Reserve a table",
+        "My bookings"
+      ]
+    }
+  ],
+  "notes": [
+    "`Book a room > Standard > Main menu` returns to the root menu - the walker stops there rather than re-walking the tree, so it is expected to be a leaf.",
+    "`Book a room > Sea View > Main menu` returns to the root menu - the walker stops there rather than re-walking the tree, so it is expected to be a leaf.",
+    "`My bookings > Main menu` returns to the root menu - the walker stops there rather than re-walking the tree, so it is expected to be a leaf."
+  ]
+}

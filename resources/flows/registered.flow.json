@@ -1,0 +1,192 @@
+{
+  "meta": {
+    "brand": "Saltmarsh Hotel (test bot)",
+    "diagram": "Saltmarsh Hotel website chatbot - Registered route",
+    "version": "1.0",
+    "flow_id": "registered",
+    "page_title": "Registered route",
+    "entry": "A guest who is signed in on the hotel website opens the chat and sends hi.",
+    "entry_label": "hi",
+    "page_order": 2,
+    "restart_keywords": [
+      "hi",
+      "hello",
+      "menu",
+      "start",
+      "restart"
+    ],
+    "fallback_text": "Sorry, I did not understand that. Please choose one of the options below.",
+    "annotations": []
+  },
+  "nodes": [
+    {
+      "id": "entry",
+      "kind": "start",
+      "view": "Entry",
+      "text": "hi"
+    },
+    {
+      "id": "welcome_back",
+      "kind": "menu",
+      "view": "welcome_back",
+      "text": "Welcome back, {first_name}. What would you like to do today?",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "room_dates",
+      "kind": "input",
+      "view": "room_dates",
+      "text": "Please enter your check-in date and number of nights (for example 12 Dec, 2 nights).",
+      "wa_type": "input"
+    },
+    {
+      "id": "room_availability",
+      "kind": "decision",
+      "view": "room_availability",
+      "text": "Is a room free for those dates?"
+    },
+    {
+      "id": "room_choice",
+      "kind": "menu",
+      "view": "room_choice",
+      "text": "Rooms free for those dates: Standard R1450 or Sea View R2100 a night. Which would you like?",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "no_rooms",
+      "kind": "menu",
+      "view": "no_rooms",
+      "text": "Sorry, we are fully booked on those dates.",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "room_review",
+      "kind": "menu",
+      "view": "room_review",
+      "text": "Please check: {room}, 12 Dec, 2 nights. Shall I book it?",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "room_booked",
+      "kind": "end",
+      "view": "room_booked",
+      "text": "Booked. Your reference is SH-2041 and the confirmation is in your email. Send \"menu\" to start again.",
+      "wa_type": "end"
+    },
+    {
+      "id": "table_details",
+      "kind": "input",
+      "view": "table_details",
+      "text": "Please enter the day, time and number of people (for example Fri 19:30, 4 people).",
+      "wa_type": "input"
+    },
+    {
+      "id": "table_reserved",
+      "kind": "end",
+      "view": "table_reserved",
+      "text": "Your table at The Saltmarsh Grill is reserved. Your reference is GR-118. Send \"menu\" to start again.",
+      "wa_type": "end"
+    },
+    {
+      "id": "my_bookings",
+      "kind": "menu",
+      "view": "my_bookings",
+      "text": "You have 1 booking: SH-2041, Sea View room, 12 Dec, 2 nights.",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "reception",
+      "kind": "end",
+      "view": "reception",
+      "text": "A receptionist will reply here shortly. Reception is staffed from 07:00 to 21:00.",
+      "wa_type": "end"
+    }
+  ],
+  "edges": [
+    {
+      "from": "entry",
+      "to": "welcome_back",
+      "label": ""
+    },
+    {
+      "from": "welcome_back",
+      "to": "room_dates",
+      "label": "Book a room"
+    },
+    {
+      "from": "welcome_back",
+      "to": "table_details",
+      "label": "Reserve a table"
+    },
+    {
+      "from": "welcome_back",
+      "to": "my_bookings",
+      "label": "My bookings"
+    },
+    {
+      "from": "room_dates",
+      "to": "room_availability",
+      "label": "12 Dec, 2 nights"
+    },
+    {
+      "from": "room_availability",
+      "to": "room_choice",
+      "label": "Yes"
+    },
+    {
+      "from": "room_availability",
+      "to": "no_rooms",
+      "label": "No"
+    },
+    {
+      "from": "room_choice",
+      "to": "room_review",
+      "label": "Standard"
+    },
+    {
+      "from": "room_choice",
+      "to": "room_review",
+      "label": "Sea View"
+    },
+    {
+      "from": "no_rooms",
+      "to": "room_dates",
+      "label": "Change dates"
+    },
+    {
+      "from": "no_rooms",
+      "to": "welcome_back",
+      "label": "Main menu"
+    },
+    {
+      "from": "room_review",
+      "to": "room_booked",
+      "label": "Book it"
+    },
+    {
+      "from": "room_review",
+      "to": "room_dates",
+      "label": "Change dates"
+    },
+    {
+      "from": "room_review",
+      "to": "welcome_back",
+      "label": "Main menu"
+    },
+    {
+      "from": "table_details",
+      "to": "table_reserved",
+      "label": "Fri 19:30, 4 people"
+    },
+    {
+      "from": "my_bookings",
+      "to": "reception",
+      "label": "Talk to reception"
+    },
+    {
+      "from": "my_bookings",
+      "to": "welcome_back",
+      "label": "Main menu"
+    }
+  ]
+}

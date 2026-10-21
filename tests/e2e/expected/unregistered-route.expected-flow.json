@@ -1,0 +1,882 @@
+{
+  "meta": {
+    "brand": "Saltmarsh Hotel (test bot)",
+    "diagram": "Saltmarsh Hotel website chatbot - Unregistered route",
+    "version": "1.0",
+    "flow_id": "unregistered",
+    "page_title": "Unregistered route",
+    "entry": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+    "entry_label": "hi",
+    "page_order": 1,
+    "restart_keywords": [
+      "hi",
+      "hello",
+      "menu",
+      "start",
+      "restart"
+    ],
+    "fallback_text": "Sorry, I did not understand that. Please choose one of the options below.",
+    "annotations": [],
+    "format": "read back from the generated Lucid CSV",
+    "depth": 4,
+    "safety_filter": "the walker's own source",
+    "safety_pattern": "yes|confirm|submit|proceed|continue|accept|agree|sign\\s*up|register|join|activate|link|unlink|replace|cancel|delete|remove|close|order|request|apply|buy|pay|checkout|physical\\s*card|virtual\\s*card|new\\s*card|update|change|edit|save|manage|already\\s+a\\s+member|use\\s+another|enter\\s*now|enter\\s+(?:the\\s+)?(?:competition|comp|draw|raffle)|claim|redeem|opt[\\s-]*in|opt[\\s-]*out|subscribe|unsubscribe|decline|reject|i\\s*do\\s*not\\s*accept|i\\s*don.t\\s*accept|sim|aceitar|aceito|aceite|concordar|concordo|confirmar|confirmo|continuar|continuo|prosseguir|avan[cç]ar|enviar|submeter|cadastrar|cadastro|registrar|registar|inscrever|inscri[cç][aã]o|assinar|ativar|activar|desativar|desactivar|vincular|desvincular|associar|desassociar|cancelar|excluir|apagar|remover|encerrar|fechar|desistir|comprar|pagar|pagamento|pedido|solicitar|encomendar|atualizar|actualizar|alterar|editar|salvar|guardar|gerir|gerenciar|trocar|substituir|novo\\s*cart[aã]o|cart[aã]o\\s*(?:f[ií]sico|virtual)|participar|concorrer|resgatar|reivindicar|inscrever[\\s-]*se|li\\s*e\\s*aceito|j[aá]\\s*sou\\s*membro|usar\\s*outro|recusar|recuso|recuse|rejeitar|rejeito|rejeite|n[aã]o\\s*aceito"
+  },
+  "root": "5",
+  "tree": {
+    "(root)": [
+      "Rooms and rates",
+      "Restaurant",
+      "Create an account"
+    ],
+    "Rooms and rates": [
+      "Create an account",
+      "Main menu"
+    ],
+    "Rooms and rates > Main menu": [],
+    "Restaurant": [
+      "View menu",
+      "Main menu"
+    ],
+    "Restaurant > View menu": [
+      "Main menu"
+    ],
+    "Restaurant > View menu > Main menu": [],
+    "Restaurant > Main menu": []
+  },
+  "steps": [
+    {
+      "id": "1",
+      "name": "Rooms and rates",
+      "trail": [],
+      "action": "select",
+      "input": "Rooms and rates",
+      "expected_reply": "We have Standard, Deluxe and Sea View rooms from R1450 a night. Sign in or create an account to book a room.",
+      "node": "7",
+      "placeholder": false,
+      "via": [],
+      "status": "expected"
+    },
+    {
+      "id": "1.2",
+      "name": "Create an account",
+      "trail": [
+        "Rooms and rates"
+      ],
+      "action": "select",
+      "input": "Create an account",
+      "expected_reply": "Please enter your email address to create your account (for example guest@example.com).",
+      "node": "13",
+      "placeholder": false,
+      "via": [
+        "create_email"
+      ],
+      "status": "expected",
+      "note": "the bot does not offer another menu straight after this: create_email come first, and every one of them needs a typed value"
+    },
+    {
+      "id": "1.2",
+      "name": "Main menu",
+      "trail": [
+        "Rooms and rates"
+      ],
+      "action": "select",
+      "input": "Main menu",
+      "expected_reply": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+      "node": "5",
+      "placeholder": false,
+      "via": [],
+      "status": "expected-navigation"
+    },
+    {
+      "id": "1",
+      "name": "Restaurant",
+      "trail": [],
+      "action": "select",
+      "input": "Restaurant",
+      "expected_reply": "The Saltmarsh Grill is open 07:00 to 22:00. You can view the menu now, but you need an account to reserve a table.",
+      "node": "9",
+      "placeholder": false,
+      "via": [],
+      "status": "expected"
+    },
+    {
+      "id": "1.2",
+      "name": "View menu",
+      "trail": [
+        "Restaurant"
+      ],
+      "action": "select",
+      "input": "View menu",
+      "expected_reply": "Tonight: grilled line fish, slow-cooked lamb shank, mushroom risotto and malva pudding.",
+      "node": "11",
+      "placeholder": false,
+      "via": [],
+      "status": "expected"
+    },
+    {
+      "id": "1.2.3",
+      "name": "Main menu",
+      "trail": [
+        "Restaurant",
+        "View menu"
+      ],
+      "action": "select",
+      "input": "Main menu",
+      "expected_reply": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+      "node": "5",
+      "placeholder": false,
+      "via": [],
+      "status": "expected-navigation"
+    },
+    {
+      "id": "1.2",
+      "name": "Main menu",
+      "trail": [
+        "Restaurant"
+      ],
+      "action": "select",
+      "input": "Main menu",
+      "expected_reply": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+      "node": "5",
+      "placeholder": false,
+      "via": [],
+      "status": "expected-navigation"
+    },
+    {
+      "id": "1",
+      "name": "Create an account",
+      "trail": [],
+      "action": "select",
+      "input": "Create an account",
+      "expected_reply": "Please enter your email address to create your account (for example guest@example.com).",
+      "node": "13",
+      "placeholder": false,
+      "via": [
+        "create_email"
+      ],
+      "status": "expected",
+      "note": "the bot does not offer another menu straight after this: create_email come first, and every one of them needs a typed value"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": 1,
+      "name": "already_registered",
+      "path": [
+        "3",
+        "5",
+        "7",
+        "13",
+        "14",
+        "16"
+      ],
+      "conditions": [
+        "Yes"
+      ],
+      "selects": [
+        "Rooms and rates",
+        "Create an account"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+          "node": "3"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Rooms and rates",
+          "node": "5"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "rooms_info",
+          "text": "We have Standard, Deluxe and Sea View rooms from R1450 a night. Sign in or create an account to book a room.",
+          "node": "7",
+          "buttons": [
+            "Create an account",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Create an account",
+          "node": "7"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "create_email",
+          "text": "Please enter your email address to create your account (for example guest@example.com).",
+          "node": "13",
+          "buttons": [],
+          "replies": [
+            "guest@example.com"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "guest@example.com",
+          "node": "13"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "Yes",
+          "on": "Is this email address already registered?",
+          "node": "14"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "already_registered",
+          "text": "That email address already has an account. Please sign in on the website and open the chat again.",
+          "node": "16",
+          "buttons": [],
+          "replies": [],
+          "placeholder": false
+        }
+      ],
+      "outcome": "ends here",
+      "terminal_view": "already_registered",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 2,
+      "name": "account_created",
+      "path": [
+        "3",
+        "5",
+        "7",
+        "13",
+        "14",
+        "18",
+        "20"
+      ],
+      "conditions": [
+        "No"
+      ],
+      "selects": [
+        "Rooms and rates",
+        "Create an account"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+          "node": "3"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Rooms and rates",
+          "node": "5"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "rooms_info",
+          "text": "We have Standard, Deluxe and Sea View rooms from R1450 a night. Sign in or create an account to book a room.",
+          "node": "7",
+          "buttons": [
+            "Create an account",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Create an account",
+          "node": "7"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "create_email",
+          "text": "Please enter your email address to create your account (for example guest@example.com).",
+          "node": "13",
+          "buttons": [],
+          "replies": [
+            "guest@example.com"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "guest@example.com",
+          "node": "13"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "No",
+          "on": "Is this email address already registered?",
+          "node": "14"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "create_name",
+          "text": "Please enter your first name.",
+          "node": "18",
+          "buttons": [],
+          "replies": [
+            "Alex"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "Alex",
+          "node": "18"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "account_created",
+          "text": "Thanks, your account is created. Sign in and open the chat again to book a room or a table.",
+          "node": "20",
+          "buttons": [],
+          "replies": [],
+          "placeholder": false
+        }
+      ],
+      "outcome": "ends here",
+      "terminal_view": "account_created",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 3,
+      "name": "guest_welcome",
+      "path": [
+        "3",
+        "5",
+        "7",
+        "5"
+      ],
+      "conditions": [],
+      "selects": [
+        "Rooms and rates",
+        "Main menu"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+          "node": "3"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Rooms and rates",
+          "node": "5"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "rooms_info",
+          "text": "We have Standard, Deluxe and Sea View rooms from R1450 a night. Sign in or create an account to book a room.",
+          "node": "7",
+          "buttons": [
+            "Create an account",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Main menu",
+          "node": "7"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to guest_welcome",
+      "terminal_view": "guest_welcome",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 4,
+      "name": "guest_welcome",
+      "path": [
+        "3",
+        "5",
+        "9",
+        "11",
+        "5"
+      ],
+      "conditions": [],
+      "selects": [
+        "Restaurant",
+        "View menu",
+        "Main menu"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+          "node": "3"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Restaurant",
+          "node": "5"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "restaurant_info",
+          "text": "The Saltmarsh Grill is open 07:00 to 22:00. You can view the menu now, but you need an account to reserve a table.",
+          "node": "9",
+          "buttons": [
+            "View menu",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "View menu",
+          "node": "9"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "food_menu",
+          "text": "Tonight: grilled line fish, slow-cooked lamb shank, mushroom risotto and malva pudding.",
+          "node": "11",
+          "buttons": [
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Main menu",
+          "node": "11"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to guest_welcome",
+      "terminal_view": "guest_welcome",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 5,
+      "name": "guest_welcome",
+      "path": [
+        "3",
+        "5",
+        "9",
+        "5"
+      ],
+      "conditions": [],
+      "selects": [
+        "Restaurant",
+        "Main menu"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+          "node": "3"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Restaurant",
+          "node": "5"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "restaurant_info",
+          "text": "The Saltmarsh Grill is open 07:00 to 22:00. You can view the menu now, but you need an account to reserve a table.",
+          "node": "9",
+          "buttons": [
+            "View menu",
+            "Main menu"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Main menu",
+          "node": "9"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false,
+          "revisit": true
+        }
+      ],
+      "outcome": "returns to guest_welcome",
+      "terminal_view": "guest_welcome",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 6,
+      "name": "already_registered",
+      "path": [
+        "3",
+        "5",
+        "13",
+        "14",
+        "16"
+      ],
+      "conditions": [
+        "Yes"
+      ],
+      "selects": [
+        "Create an account"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+          "node": "3"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Create an account",
+          "node": "5"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "create_email",
+          "text": "Please enter your email address to create your account (for example guest@example.com).",
+          "node": "13",
+          "buttons": [],
+          "replies": [
+            "guest@example.com"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "guest@example.com",
+          "node": "13"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "Yes",
+          "on": "Is this email address already registered?",
+          "node": "14"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "already_registered",
+          "text": "That email address already has an account. Please sign in on the website and open the chat again.",
+          "node": "16",
+          "buttons": [],
+          "replies": [],
+          "placeholder": false
+        }
+      ],
+      "outcome": "ends here",
+      "terminal_view": "already_registered",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    },
+    {
+      "id": 7,
+      "name": "account_created",
+      "path": [
+        "3",
+        "5",
+        "13",
+        "14",
+        "18",
+        "20"
+      ],
+      "conditions": [
+        "No"
+      ],
+      "selects": [
+        "Create an account"
+      ],
+      "turns": [
+        {
+          "actor": "user",
+          "kind": "enter",
+          "view": "hi",
+          "text": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+          "node": "3"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "guest_welcome",
+          "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+          "node": "5",
+          "buttons": [
+            "Rooms and rates",
+            "Restaurant",
+            "Create an account"
+          ],
+          "replies": [],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "select",
+          "text": "Create an account",
+          "node": "5"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "create_email",
+          "text": "Please enter your email address to create your account (for example guest@example.com).",
+          "node": "13",
+          "buttons": [],
+          "replies": [
+            "guest@example.com"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "guest@example.com",
+          "node": "13"
+        },
+        {
+          "actor": "condition",
+          "kind": "branch",
+          "text": "No",
+          "on": "Is this email address already registered?",
+          "node": "14"
+        },
+        {
+          "actor": "bot",
+          "kind": "input",
+          "view": "create_name",
+          "text": "Please enter your first name.",
+          "node": "18",
+          "buttons": [],
+          "replies": [
+            "Alex"
+          ],
+          "placeholder": false
+        },
+        {
+          "actor": "user",
+          "kind": "type",
+          "text": "Alex",
+          "node": "18"
+        },
+        {
+          "actor": "bot",
+          "kind": "message",
+          "view": "account_created",
+          "text": "Thanks, your account is created. Sign in and open the chat again to book a room or a table.",
+          "node": "20",
+          "buttons": [],
+          "replies": [],
+          "placeholder": false
+        }
+      ],
+      "outcome": "ends here",
+      "terminal_view": "account_created",
+      "terminal_kind": "message",
+      "walkable": true,
+      "blocked_by": []
+    }
+  ],
+  "entry_points": [
+    {
+      "node": "3",
+      "label": "hi",
+      "text": "hi",
+      "kind": "menu-option",
+      "how": "a button on another page's menu",
+      "keywords": [],
+      "walk_as": [],
+      "walkable": true,
+      "why": "reached by tapping `hi` on another page's menu",
+      "entry_label": "hi",
+      "entry_from": null,
+      "first_menu": [
+        "Rooms and rates",
+        "Restaurant",
+        "Create an account"
+      ]
+    }
+  ],
+  "notes": [
+    "`Rooms and rates > Main menu` returns to the root menu - the walker stops there rather than re-walking the tree, so it is expected to be a leaf.",
+    "`Restaurant > View menu > Main menu` returns to the root menu - the walker stops there rather than re-walking the tree, so it is expected to be a leaf.",
+    "`Restaurant > Main menu` returns to the root menu - the walker stops there rather than re-walking the tree, so it is expected to be a leaf."
+  ]
+}

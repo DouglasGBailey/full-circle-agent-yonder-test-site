@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "brand": "Saltmarsh Hotel (test bot)",
+    "diagram": "Saltmarsh Hotel website chatbot - Unregistered route",
+    "version": "1.0",
+    "flow_id": "unregistered",
+    "page_title": "Unregistered route",
+    "entry": "A visitor who is not signed in opens the chat on the hotel website and sends hi.",
+    "entry_label": "hi",
+    "page_order": 1,
+    "restart_keywords": [
+      "hi",
+      "hello",
+      "menu",
+      "start",
+      "restart"
+    ],
+    "fallback_text": "Sorry, I did not understand that. Please choose one of the options below.",
+    "annotations": []
+  },
+  "nodes": [
+    {
+      "id": "entry",
+      "kind": "start",
+      "view": "Entry",
+      "text": "hi"
+    },
+    {
+      "id": "guest_welcome",
+      "kind": "menu",
+      "view": "guest_welcome",
+      "text": "Welcome to the Saltmarsh Hotel. You are not signed in. How can we help?",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "rooms_info",
+      "kind": "menu",
+      "view": "rooms_info",
+      "text": "We have Standard, Deluxe and Sea View rooms from R1450 a night. Sign in or create an account to book a room.",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "restaurant_info",
+      "kind": "menu",
+      "view": "restaurant_info",
+      "text": "The Saltmarsh Grill is open 07:00 to 22:00. You can view the menu now, but you need an account to reserve a table.",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "food_menu",
+      "kind": "menu",
+      "view": "food_menu",
+      "text": "Tonight: grilled line fish, slow-cooked lamb shank, mushroom risotto and malva pudding.",
+      "wa_type": "buttons"
+    },
+    {
+      "id": "create_email",
+      "kind": "input",
+      "view": "create_email",
+      "text": "Please enter your email address to create your account (for example guest@example.com).",
+      "wa_type": "input"
+    },
+    {
+      "id": "email_check",
+      "kind": "decision",
+      "view": "email_check",
+      "text": "Is this email address already registered?"
+    },
+    {
+      "id": "already_registered",
+      "kind": "end",
+      "view": "already_registered",
+      "text": "That email address already has an account. Please sign in on the website and open the chat again.",
+      "wa_type": "end"
+    },
+    {
+      "id": "create_name",
+      "kind": "input",
+      "view": "create_name",
+      "text": "Please enter your first name.",
+      "wa_type": "input"
+    },
+    {
+      "id": "account_created",
+      "kind": "end",
+      "view": "account_created",
+      "text": "Thanks, your account is created. Sign in and open the chat again to book a room or a table.",
+      "wa_type": "end"
+    }
+  ],
+  "edges": [
+    {
+      "from": "entry",
+      "to": "guest_welcome",
+      "label": ""
+    },
+    {
+      "from": "guest_welcome",
+      "to": "rooms_info",
+      "label": "Rooms and rates"
+    },
+    {
+      "from": "guest_welcome",
+      "to": "restaurant_info",
+      "label": "Restaurant"
+    },
+    {
+      "from": "guest_welcome",
+      "to": "create_email",
+      "label": "Create an account"
+    },
+    {
+      "from": "rooms_info",
+      "to": "create_email",
+      "label": "Create an account"
+    },
+    {
+      "from": "rooms_info",
+      "to": "guest_welcome",
+      "label": "Main menu"
+    },
+    {
+      "from": "restaurant_info",
+      "to": "food_menu",
+      "label": "View menu"
+    },
+    {
+      "from": "restaurant_info",
+      "to": "guest_welcome",
+      "label": "Main menu"
+    },
+    {
+      "from": "food_menu",
+      "to": "guest_welcome",
+      "label": "Main menu"
+    },
+    {
+      "from": "create_email",
+      "to": "email_check",
+      "label": "guest@example.com"
+    },
+    {
+      "from": "email_check",
+      "to": "already_registered",
+      "label": "Yes"
+    },
+    {
+      "from": "email_check",
+      "to": "create_name",
+      "label": "No"
+    },
+    {
+      "from": "create_name",
+      "to": "account_created",
+      "label": "Alex"
+    }
+  ]
+}
