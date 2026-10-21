@@ -1,7 +1,7 @@
 # Development Status - Saltmarsh Hotel test site (Full Circle Agent v1)
 
 ## Last Updated
-**Date**: 2026-10-21 16:25 SAST
+**Date**: 2026-10-21 18:05 SAST
 **Session Duration**: several hours over 2026-10-20 and 2026-10-21
 **Claude Code Session**: "go build" for v1 of the plan, `full-circle-agent-v1-plan.md`
 
@@ -21,6 +21,12 @@
 - **Dry run 1 is live**: the agent's own change 9f29fbf (Cape Malay chicken curry on `/restaurant`, plus a Playwright
   test of the dish order) went from `/channel` to live at 16:14:00 SAST after a guest approval. 35 min from message to live
   (the first try failed on launchd throttling in the tooling, now fixed; the retry took 15.5 min).
+- **Card #2 is live, filmed end to end**: the agent's change c83b208 ("Check-in is from 14:00 and check-out is by 10:00."
+  under the room cards on `/rooms`, plus a Playwright test) was requested at 17:44:10 SAST, approved at 17:48:23 and
+  deployed at 17:55:40 SAST: 12 min from message to live, first try. The run was recorded headless and narrated
+  (edge-tts en-GB-RyanNeural) into a 148.5 s MP4 by the tooling repo's `demo/` scripts (commit 84ec414). The video is in
+  `/Users/douglasbailey/my-dev/full-circle-claude-code-software-engineering/full-circle-agent-tooling/demo-output/e2e-2026-10-21-17-43-SAST/`
+  (git-ignored, not pushed).
 
 ### What's In Progress
 - Nothing. Ready for the pilot.
@@ -45,7 +51,7 @@
 - **Laravel Boost is deliberately not installed.** Ignore the installer-generated `CLAUDE.md` and `AGENTS.md`.
 
 ### Known Issues
-- **The Mac's disk is nearly full**: 3.3 GB free on 2026-10-21 15:30 SAST. One WebKit run failed with `ENOSPC` earlier. Please free some space.
+- **The Mac's disk is nearly full**: 2.9 GB free on 2026-10-21 18:05 SAST (it dipped to 2.0 GB during the filmed run). One WebKit run failed with `ENOSPC` earlier. Please free some space.
 - `resources/views/welcome.blade.php` is the unused Laravel default.
 
 ## File Structure Status
@@ -71,6 +77,8 @@
 | 2026-10-21 15:32 | 68/68 (596 assertions) | pass | 100 passed, 2 skipped, 0 failed, 2.3 min | Local on port 8002 (the gates' port), after the E2E_PORT change |
 | 2026-10-21 16:06 | 68/68 | pass | 103 passed, 2 skipped, 0 failed, 1.8 min | Agent gates on card #1 retry (one new test from the agent) |
 | 2026-10-21 16:14 | - | - | LIVE: 64 passed, 41 skipped, 0 failed, 5.5 min | After the dry-run deploy of 9f29fbf |
+| 2026-10-21 17:48 | 68/68 | pass | 106 passed, 2 skipped, 0 failed | Agent gates on card #2 (one new test from the agent) |
+| 2026-10-21 17:55 | - | - | LIVE: 67 passed, 41 skipped, 0 failed | After the filmed deploy of c83b208 |
 
 - Screenshots were inspected at 320, 390, 768 and 1280 px in Chromium, Firefox and WebKit.
 - The mobile menu closes on Escape, an outside click, a link click and Back. This was tested.
@@ -84,7 +92,7 @@
 
 ### Immediate Priorities
 1. Run the pilot; watch `/board`.
-2. Free disk space on the Mac (3.3 GB free).
+2. Free disk space on the Mac (2.9 GB free).
 3. The chatbot's dish list does not yet mention the new curry (agent's note; out of the dry run's scope).
 
 ### Warnings/Cautions
