@@ -104,6 +104,14 @@ for (const width of [320, 390, 768]) {
     });
 }
 
+test("restaurant: Tonight's menu lists the Cape Malay chicken curry just before the malva pudding", async ({ page }) => {
+    await page.goto('/restaurant');
+    await expect(page.locator('.menu-list li')).toHaveText([
+        /Grilled line fish/, /Slow-cooked lamb shank/, /Mushroom risotto/,
+        /Cape Malay chicken curry\s*yellow rice/, /Malva pudding/,
+    ]);
+});
+
 test('unknown page: friendly 404 with the site layout', async ({ page }) => {
     const res = await page.goto('/no-such-page');
     expect(res.status()).toBe(404);

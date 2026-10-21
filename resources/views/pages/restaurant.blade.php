@@ -19,6 +19,7 @@
                 <li><span>Grilled line fish</span><span class="muted">lemon butter, greens</span></li>
                 <li><span>Slow-cooked lamb shank</span><span class="muted">mash, rosemary jus</span></li>
                 <li><span>Mushroom risotto</span><span class="muted">parmesan, thyme</span></li>
+                <li><span>Cape Malay chicken curry</span><span class="muted">yellow rice</span></li>
                 <li><span>Malva pudding</span><span class="muted">custard</span></li>
             </ul>
         </div>
