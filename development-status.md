@@ -84,6 +84,7 @@
 | 2026-10-21 17:48 | 68/68 | pass | 106 passed, 2 skipped, 0 failed | Agent gates on card #2 (one new test from the agent) |
 | 2026-10-21 17:55 | - | - | LIVE: 67 passed, 41 skipped, 0 failed | After the filmed deploy of c83b208 |
 | 2026-10-21 19:42 | 68/68 (599 assertions) | pass | 106 passed, 2 skipped, 0 failed, 2.3 min | Footer: VML Yonder, two lines removed |
+| 2026-10-21 19:46 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.5 min | After the deploy of b53ae3b (19:40 SAST) |
 
 - Screenshots were inspected at 320, 390, 768 and 1280 px in Chromium, Firefox and WebKit.
 - The mobile menu closes on Escape, an outside click, a link click and Back. This was tested.
