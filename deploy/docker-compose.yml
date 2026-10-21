@@ -1,0 +1,24 @@
+# Runs on chrisweb from ~/apps/yonder-test-site/src/deploy:
+#   docker compose -p yonder-test-site up -d --build
+# Layout on the host (outside the git checkout):
+#   ~/apps/yonder-test-site/.env    secrets, chmod 600
+#   ~/apps/yonder-test-site/data/   SQLite database
+#   ~/apps/yonder-test-site/logs/   Laravel logs
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: yonder-test-site:latest
+    container_name: yonder-test-site
+    restart: unless-stopped
+    env_file: ../../.env
+    environment:
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/www/data/database.sqlite
+    volumes:
+      - ../../data:/var/www/data
+      - ../../logs:/var/www/html/storage/logs
+    # Only the host's Docker bridge address: nginx-webstack proxies to it, the internet cannot.
+    ports:
+      - "172.17.0.1:8880:80"
