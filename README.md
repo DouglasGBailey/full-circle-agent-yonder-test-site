@@ -72,7 +72,7 @@ The routes are shaped like Slack's Web API, so a later version can swap in real 
 | `POST /api/slack/chat.postMessage` | Post as Full Circle Agent (optionally in a thread) |
 | `POST /api/slack/reactions.add` | React to a message |
 | `GET /api/agent/pending` | Requests that have no card yet |
-| `GET /api/agent/approval?ts=` | Whether a signed-in human (not the bot) approved the thread |
+| `GET /api/agent/approval?request_ts=` | Whether a signed-in human (not the bot) approved the thread |
 | `GET`/`POST /api/board/cards`, `PATCH /api/board/cards/{card}` | Board cards |
 
 A missing or short server token returns **503**. A wrong token returns **401**.

@@ -1,6 +1,7 @@
 // Headless Playwright end-to-end tests for the Saltmarsh Hotel test site.
 //
-//   npm run e2e         local throwaway server on 127.0.0.1:8001 (tests/e2e/serve.sh)
+//   npm run e2e         local throwaway server on 127.0.0.1:8001 (tests/e2e/serve.sh);
+//                       E2E_PORT and E2E_STATE_DIR move it, so two runs can share a Mac
 //   npm run e2e:live    the live site; needs E2E_GUEST_PASSWORD (and E2E_API_TOKEN
 //                       for the channel and board test) in the environment
 //
@@ -8,7 +9,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const live = Boolean(process.env.E2E_BASE_URL);
-const baseURL = process.env.E2E_BASE_URL || 'http://127.0.0.1:8001';
+const baseURL = process.env.E2E_BASE_URL || `http://127.0.0.1:${process.env.E2E_PORT || 8001}`;
 
 export default defineConfig({
     testDir: './tests/e2e',

@@ -13,7 +13,7 @@ FROM php:8.4-apache
 
 # Hide versions, serve only public/, allow .htaccess rewrites.
 RUN a2enmod rewrite headers \
- && printf 'ServerTokens Prod\nServerSignature Off\nTraceEnable Off\n' > /etc/apache2/conf-available/zz-hardening.conf \
+ && printf 'ServerName localhost\nServerTokens Prod\nServerSignature Off\nTraceEnable Off\n' > /etc/apache2/conf-available/zz-hardening.conf \
  && a2enconf zz-hardening \
  && printf 'expose_php = Off\nmemory_limit = 256M\nupload_max_filesize = 2M\npost_max_size = 2M\nopcache.enable = 1\nopcache.validate_timestamps = 0\n' > /usr/local/etc/php/conf.d/zz-app.ini \
  && docker-php-ext-install opcache
