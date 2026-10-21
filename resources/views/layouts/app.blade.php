@@ -25,7 +25,7 @@
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="keywords" content="@yield('keywords', 'Saltmarsh Hotel, test hotel website, hotel chatbot, restaurant booking, Full Circle Agent, VML Yonder, Claude Code')">
-    <meta name="author" content="Terminal Velocity AI">
+    <meta name="author" content="VML Yonder">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0b1418">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -53,7 +53,7 @@
         'description' => $pageDescription,
         'inLanguage' => 'en-ZA',
         'about' => ['@type' => 'Hotel', 'name' => 'Saltmarsh Hotel', 'description' => 'A fictional hotel and restaurant used to test Full Circle Agent.'],
-        'publisher' => ['@type' => 'Organization', 'name' => 'Terminal Velocity AI', 'url' => 'https://terminalvelocityai.tech/'],
+        'publisher' => ['@type' => 'Organization', 'name' => 'VML Yonder'],
     ], JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
 
     <link rel="stylesheet" href="{{ asset('css/site.css') }}?v={{ filemtime(public_path('css/site.css')) }}">
@@ -123,9 +123,7 @@
             <a href="{{ route('sitemap') }}">Sitemap</a>
         </nav>
         <div class="site-footer__legal">
-            <p><a href="https://terminalvelocityai.tech/">&copy; 2026 Terminal Velocity AI. All rights reserved.</a></p>
-            <p>Built with love and Claude Code</p>
-            <p class="muted small">Hero photo: Gentry George, U.S. Fish and Wildlife Service (public domain).</p>
+            <p>&copy; 2026 VML Yonder. All rights reserved.</p>
         </div>
     </div>
 </footer>

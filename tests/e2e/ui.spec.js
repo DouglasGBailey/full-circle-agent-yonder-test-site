@@ -25,8 +25,9 @@ for (const [name, url] of PAGES) {
             expect(await h1.evaluate((el) => getComputedStyle(el).fontFamily)).toMatch(/^Verdana/);
             const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
             expect(overflow, `${url} at ${width}px scrolls sideways by ${overflow}px`).toBeLessThanOrEqual(0);
-            await expect(page.locator('footer')).toContainText('© 2026 Terminal Velocity AI. All rights reserved.');
-            await expect(page.locator('footer')).toContainText('Built with love and Claude Code');
+            await expect(page.locator('footer')).toContainText('© 2026 VML Yonder. All rights reserved.');
+            await expect(page.locator('footer')).not.toContainText('Built with love and Claude Code');
+            await expect(page.locator('footer')).not.toContainText('Hero photo:');
             await shoot(page, { path: `${SHOTS}/${browserName}-${name}-${width}.png`, fullPage: true });
         }
         expect(errors()).toEqual([]);
@@ -127,7 +128,7 @@ test('unknown page: friendly 404 with the site layout', async ({ page }) => {
     const res = await page.goto('/no-such-page');
     expect(res.status()).toBe(404);
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.locator('footer')).toContainText('Terminal Velocity AI');
+    await expect(page.locator('footer')).toContainText('VML Yonder');
 });
 
 test('sign in: wrong password and the honeypot are refused', async ({ page }) => {

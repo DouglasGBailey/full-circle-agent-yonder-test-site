@@ -1,7 +1,7 @@
 # Development Status - Saltmarsh Hotel test site (Full Circle Agent v1)
 
 ## Last Updated
-**Date**: 2026-10-21 18:05 SAST
+**Date**: 2026-10-21 19:45 SAST
 **Session Duration**: several hours over 2026-10-20 and 2026-10-21
 **Claude Code Session**: "go build" for v1 of the plan, `full-circle-agent-v1-plan.md`
 
@@ -36,6 +36,10 @@
 
 ## Technical Details
 ### Recent Changes
+- Footer (owner's request, 2026-10-21): "Built with love and Claude Code" and the hero photo credit line were removed,
+  and the copyright line is now "© 2026 VML Yonder. All rights reserved." (no link). The author meta and the JSON-LD
+  publisher are VML Yonder too. This overrides the global footer rule for this site. The photo's provenance stays in
+  `public/images/CREDITS.md`. The tests check the new line and that the removed lines stay gone.
 - `playwright.config.js`: the port comes from `E2E_PORT` (default 8001), so the agent's gates (8002) and its own runs (8012)
   can share the Mac with a developer run.
 - `deploy/Dockerfile`: `ServerName localhost` in `zz-hardening.conf` silences Apache's AH00558 warning.
@@ -79,6 +83,7 @@
 | 2026-10-21 16:14 | - | - | LIVE: 64 passed, 41 skipped, 0 failed, 5.5 min | After the dry-run deploy of 9f29fbf |
 | 2026-10-21 17:48 | 68/68 | pass | 106 passed, 2 skipped, 0 failed | Agent gates on card #2 (one new test from the agent) |
 | 2026-10-21 17:55 | - | - | LIVE: 67 passed, 41 skipped, 0 failed | After the filmed deploy of c83b208 |
+| 2026-10-21 19:42 | 68/68 (599 assertions) | pass | 106 passed, 2 skipped, 0 failed, 2.3 min | Footer: VML Yonder, two lines removed |
 
 - Screenshots were inspected at 320, 390, 768 and 1280 px in Chromium, Firefox and WebKit.
 - The mobile menu closes on Escape, an outside click, a link click and Back. This was tested.

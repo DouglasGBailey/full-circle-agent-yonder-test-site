@@ -41,10 +41,15 @@ class SecurityHeadersTest extends TestCase
     {
         $html = $this->get('/')->getContent();
         foreach (['<meta name="description"', '<link rel="canonical"', 'og:title', 'twitter:card', 'application/ld+json',
-            '<meta name="author" content="Terminal Velocity AI">', '&copy; 2026 Terminal Velocity AI. All rights reserved.',
-            'Built with love and Claude Code', 'role="switch"', 'image/svg+xml'] as $needle) {
+            '<meta name="author" content="VML Yonder">', '&copy; 2026 VML Yonder. All rights reserved.', '"name":"VML Yonder"',
+            'role="switch"', 'image/svg+xml'] as $needle) {
             $this->assertStringContainsString($needle, $html);
         }
+        // Removed from the footer at the owner's request (2026-10-21).
+        $this->assertStringNotContainsString('Built with love and Claude Code', $html);
+        $this->assertStringNotContainsString('Hero photo:', $html);
+        // The company name is VML Yonder (owner's request, 2026-10-21).
+        $this->assertStringNotContainsString('Terminal Velocity AI. All rights reserved.', $html);
         $this->get('/sitemap.xml')->assertOk();
         $this->assertStringContainsString('Sitemap:', file_get_contents(public_path('robots.txt')));   // static file, served by the web server
         $this->get('/no-such-page')->assertNotFound();

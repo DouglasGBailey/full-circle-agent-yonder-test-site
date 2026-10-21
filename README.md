@@ -121,4 +121,4 @@ The logo and favicon are original artwork.
 
 ---
 
-© 2026 [Terminal Velocity AI](https://terminalvelocityai.tech/). All rights reserved. Built with love and Claude Code.
+© 2026 VML Yonder. All rights reserved.
