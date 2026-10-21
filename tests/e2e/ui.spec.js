@@ -112,6 +112,17 @@ test("restaurant: Tonight's menu lists the Cape Malay chicken curry just before 
     ]);
 });
 
+test('rooms: check-in and check-out times sit just under the three room cards', async ({ page }) => {
+    await page.goto('/rooms');
+    await expect(page.locator('.room')).toHaveCount(3);
+    const times = page.locator('.room-times');
+    await expect(times).toBeVisible();
+    await expect(times).toHaveText('Check-in is from 14:00 and check-out is by 10:00.');
+    const cardsBottom = await page.locator('.grid--3').evaluate((el) => el.getBoundingClientRect().bottom);
+    const timesTop = await times.evaluate((el) => el.getBoundingClientRect().top);
+    expect(timesTop).toBeGreaterThan(cardsBottom);
+});
+
 test('unknown page: friendly 404 with the site layout', async ({ page }) => {
     const res = await page.goto('/no-such-page');
     expect(res.status()).toBe(404);

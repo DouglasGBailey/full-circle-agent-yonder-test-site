@@ -26,6 +26,7 @@
         @endforeach
     </div>
     <div class="container">
+        <p class="room-times">Check-in is from 14:00 and check-out is by 10:00.</p>
         <div class="note">
             <p>To book a test room, <a href="{{ route('login') }}">sign in</a> and open the chat. Try <strong>12 Dec, 2 nights</strong> (rooms free) or <strong>24 Dec, 2 nights</strong> (fully booked: 20 to 31 December).</p>
             <button type="button" class="btn btn--primary" data-chat-open>Open the chat</button>
