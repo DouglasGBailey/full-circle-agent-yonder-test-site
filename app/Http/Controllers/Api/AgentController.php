@@ -4,22 +4,28 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\BoardCard;
+use App\Models\BoardTicket;
 use App\Models\ChannelMessage;
 use App\Services\AgentQueue;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 /** The agent's work queue, the approval gate and the board cards. */
 class AgentController extends Controller
 {
-    /** Which status may follow which. Deploying needs an approval as well. */
+    /**
+     * Which status may follow which. Deploying needs an approval, and leaving
+     * Tickets proposed for In progress needs the tickets to be approved.
+     */
     private const NEXT = [
         'New' => ['In progress', 'Needs info', 'Failed'],
-        'In progress' => ['Needs info', 'Waiting approval', 'Failed'],
+        'In progress' => ['Needs info', 'Tickets proposed', 'Waiting approval', 'Failed'],
         'Needs info' => ['In progress', 'Failed'],
+        'Tickets proposed' => ['In progress', 'Failed'],
         'Waiting approval' => ['In progress', 'Deploying', 'Failed'],
-        'Deploying' => ['Deployed', 'Failed'],
+        'Deploying' => ['Deployed', 'Tickets proposed', 'Failed'],
         'Deployed' => [],
         'Failed' => ['In progress'],
     ];
@@ -44,7 +50,7 @@ class AgentController extends Controller
 
     public function cards(): JsonResponse
     {
-        return response()->json(['ok' => true, 'cards' => BoardCard::orderByDesc('id')->limit(200)->get()->map->toApi()->values()]);
+        return response()->json(['ok' => true, 'cards' => BoardCard::with('tickets')->orderByDesc('id')->limit(200)->get()->map->toApi()->values()]);
     }
 
     public function createCard(Request $request): JsonResponse
@@ -96,6 +102,18 @@ class AgentController extends Controller
                 }
                 $data['approved_by'] = $approval['approved_by'];
             }
+            if ($status === 'Tickets proposed' && ! $card->tickets()->where('status', 'Proposed')->exists()) {
+                return response()->json(['ok' => false, 'error' => 'no_proposed_tickets'], 409);
+            }
+            $ticketsApprovedBy = null;
+            if ($card->status === 'Tickets proposed' && $status === 'In progress') {
+                // Server-side copy of the tickets gate: a person must say "approve" first.
+                $approval = $this->queue->ticketsApproval($card);
+                if (! $approval['approved']) {
+                    return response()->json(['ok' => false, 'error' => 'not_approved'], 409);
+                }
+                $ticketsApprovedBy = $approval['approved_by'];
+            }
             if ($status === 'Waiting approval') {
                 $data['waiting_since'] = now();
                 $data['approved_by'] = null;
@@ -110,8 +128,55 @@ class AgentController extends Controller
             $data['status_changed_at'] = now();
         }
 
-        $card->fill($data)->save();
+        DB::transaction(function () use ($card, $data, $status, &$ticketsApprovedBy) {
+            $from = $card->status;
+            $card->fill($data)->save();
+            if ($from === 'Tickets proposed' && $status === 'In progress') {
+                $card->tickets()->where('status', 'Proposed')->update(['status' => 'Open', 'approved_by' => $ticketsApprovedBy]);
+            } elseif ($from === 'Tickets proposed' && $status === 'Failed') {
+                $card->tickets()->where('status', 'Proposed')->update(['status' => 'Dropped']);
+            }
+        });
 
         return response()->json(['ok' => true, 'card' => $card->fresh()->toApi()]);
+    }
+
+    /**
+     * Turns the latest test failures into Proposed tickets for a new round, and
+     * closes the round before it: an Open ticket whose title fails again is
+     * "Still failing", the rest are "Fixed". An empty list only closes the round
+     * (the tests passed). The card must be In progress or Deploying.
+     */
+    public function proposeTickets(Request $request, BoardCard $card): JsonResponse
+    {
+        $data = $request->validate([
+            'tickets' => ['present', 'array', 'max:10'],
+            'tickets.*.title' => ['required', 'string', 'min:3', 'max:200'],
+            'tickets.*.detail' => ['nullable', 'string', 'max:2000'],
+        ]);
+        if (! in_array($card->status, ['In progress', 'Deploying'], true)) {
+            return response()->json(['ok' => false, 'error' => "bad_status: {$card->status}"], 409);
+        }
+        $new = collect($data['tickets']);
+        $round = (int) $card->tickets()->max('round') + 1;
+        if ($new->isNotEmpty() && $round > BoardCard::MAX_TICKET_ROUNDS) {
+            return response()->json(['ok' => false, 'error' => 'too_many_rounds'], 409);
+        }
+
+        DB::transaction(function () use ($card, $new, $round) {
+            $titles = $new->pluck('title')->all();
+            foreach ($card->tickets()->where('status', 'Open')->get() as $open) {
+                $open->update(['status' => in_array($open->title, $titles, true) ? 'Still failing' : 'Fixed']);
+            }
+            $card->tickets()->where('status', 'Proposed')->update(['status' => 'Dropped']);
+            foreach ($new as $t) {
+                BoardTicket::create([
+                    'board_card_id' => $card->id, 'round' => $round, 'title' => $t['title'],
+                    'detail' => $t['detail'] ?? null, 'status' => 'Proposed',
+                ]);
+            }
+        });
+
+        return response()->json(['ok' => true, 'card' => $card->fresh()->toApi()], $new->isNotEmpty() ? 201 : 200);
     }
 }

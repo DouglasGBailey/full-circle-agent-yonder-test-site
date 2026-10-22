@@ -40,6 +40,21 @@
                     @if ($card->attempts > 1)<div><dt>Attempts</dt><dd>{{ $card->attempts }}</dd></div>@endif
                 </dl>
                 @if ($card->notes)<p class="board-card__notes">{{ $card->notes }}</p>@endif
+                @if ($card->tickets->isNotEmpty())
+                    <div class="board-card__tickets">
+                        <h3 class="board-card__tickets-title">Tickets from failed tests</h3>
+                        <ul class="tickets">
+                            @foreach ($card->tickets as $ticket)
+                                <li class="ticket">
+                                    <span class="ticket__round">Round {{ $ticket->round }}</span>
+                                    <span class="ticket__title">{{ $ticket->title }}</span>
+                                    <span class="badge badge--small status--{{ \Illuminate\Support\Str::slug($ticket->status) }}">{{ $ticket->status }}</span>
+                                    @if ($ticket->approved_by)<span class="ticket__by small">approved by {{ $ticket->approved_by }}</span>@endif
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 @if ($card->request_ts)<p class="small"><a href="{{ route('channel') }}#m-{{ str_replace('.', '-', $card->request_ts) }}">Open the thread</a></p>@endif
             </article>
         @empty

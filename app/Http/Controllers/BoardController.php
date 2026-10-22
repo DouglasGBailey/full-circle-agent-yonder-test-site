@@ -9,7 +9,7 @@ class BoardController extends Controller
 {
     public function index(): View
     {
-        $cards = BoardCard::orderByDesc('id')->limit(200)->get();
+        $cards = BoardCard::with('tickets')->orderByDesc('id')->limit(200)->get();
 
         return view('board.index', ['cards' => $cards, 'statuses' => BoardCard::STATUSES]);
     }

@@ -20,6 +20,11 @@ class ExampleTest extends TestCase
         }
     }
 
+    public function test_home_page_explains_the_ticket_loop(): void
+    {
+        $this->get('/')->assertOk()->assertSee('Any test failures generate proposed tickets which, if approved, get created and attended to by Claude Code, followed by testing again. This repeats until no failures are observed.');
+    }
+
     public function test_posting_to_the_channel_needs_an_account(): void
     {
         $this->post('/channel/messages', ['text' => 'hello'])->assertRedirect('/login');

@@ -264,6 +264,196 @@ class AgentApiTest extends TestCase
         $this->api('PATCH', '/board/cards/999', ['notes' => 'x'])->assertStatus(404);
     }
 
+    // ---------- tickets from failed tests ----------
+
+    private function tickets(int $id, array $titles): TestResponse
+    {
+        return $this->api('POST', "/board/cards/{$id}/tickets", [
+            'tickets' => array_map(fn ($t) => ['title' => $t, 'detail' => "Failure output for {$t}"], $titles),
+        ]);
+    }
+
+    /** A card in progress whose tests failed: tickets proposed and posted. Returns [ts, id]. */
+    private function proposedCard(User $u, array $titles = ['Rooms page: check-in line missing', 'Firefox: menu does not close']): array
+    {
+        $ts = $this->request($u);
+        $id = $this->card($ts);
+        $this->move($id, 'In progress')->assertOk();
+        $this->tickets($id, $titles)->assertCreated()->assertJsonPath('card.tickets.0.status', 'Proposed');
+        $this->move($id, 'Tickets proposed')->assertOk();
+        $this->travel(1)->seconds();
+
+        return [$ts, $id];
+    }
+
+    public function test_failed_tests_become_proposed_tickets_on_the_card(): void
+    {
+        [, $id] = $this->proposedCard(User::factory()->create());
+        $card = $this->api('GET', '/board/cards')->json('cards.0');
+        $this->assertSame('Tickets proposed', $card['status']);
+        $this->assertCount(2, $card['tickets']);
+        $this->assertSame([1, 1], array_column($card['tickets'], 'round'));
+        $this->assertSame(['Proposed', 'Proposed'], array_column($card['tickets'], 'status'));
+        $this->get('/board')->assertOk()->assertSee('Tickets from failed tests')
+            ->assertSee('Rooms page: check-in line missing')->assertSee('Round 1');
+    }
+
+    public function test_tickets_proposed_needs_a_proposed_ticket(): void
+    {
+        $id = $this->card($this->request(User::factory()->create()));
+        $this->move($id, 'In progress')->assertOk();
+        $this->move($id, 'Tickets proposed')->assertStatus(409)->assertJsonPath('error', 'no_proposed_tickets');
+        $this->tickets($id, [])->assertOk();   // an empty round only closes; still none proposed
+        $this->move($id, 'Tickets proposed')->assertStatus(409);
+    }
+
+    public function test_tickets_need_an_approve_reply_before_the_fix(): void
+    {
+        $u = User::factory()->create();
+        [$ts, $id] = $this->proposedCard($u);
+        $this->api('GET', '/agent/pending')->assertJsonCount(0, 'items');
+        $this->move($id, 'In progress')->assertStatus(409)->assertJsonPath('error', 'not_approved');
+
+        // A reaction is not enough, and neither is a word that only contains "approve".
+        $this->actingAs($u)->postJson('/channel/reactions', ['ts' => $ts, 'name' => 'white_check_mark'])->assertOk();
+        $this->reply($u, $ts, 'disapprove of this');
+        $this->api('GET', '/agent/pending')->assertJsonCount(0, 'items');
+        $this->move($id, 'In progress')->assertStatus(409);
+    }
+
+    public function test_approve_opens_the_tickets_for_the_fix(): void
+    {
+        $reviewer = User::factory()->create(['name' => 'Yonder Reviewer']);
+        [$ts, $id] = $this->proposedCard(User::factory()->create());
+        $this->reply($reviewer, $ts, 'approve');
+
+        $this->api('GET', '/agent/pending')->assertJsonPath('items.0.kind', 'tickets_approval')
+            ->assertJsonPath('items.0.user_name', 'Yonder Reviewer')->assertJsonPath('items.0.card_id', $id);
+        $res = $this->move($id, 'In progress')->assertOk();
+        $this->assertSame(['Open', 'Open'], array_column($res->json('card.tickets'), 'status'));
+        $this->assertSame(['Yonder Reviewer', 'Yonder Reviewer'], array_column($res->json('card.tickets'), 'approved_by'));
+        $this->assertSame(0, $res->json('card.attempts'));   // a fix round is not a retry
+        $this->assertNull($res->json('card.approved_by'));   // and not a deploy approval
+    }
+
+    public function test_an_old_approve_does_not_approve_new_tickets(): void
+    {
+        $reviewer = User::factory()->create();
+        $ts = $this->request(User::factory()->create());
+        $id = $this->card($ts);
+        $this->move($id, 'In progress')->assertOk();
+        $this->travel(1)->seconds();
+        $this->reply($reviewer, $ts, 'approve');
+        $this->travel(1)->seconds();
+        $this->tickets($id, ['A failing test'])->assertCreated();
+        $this->move($id, 'Tickets proposed')->assertOk();
+        $this->travel(1)->seconds();
+
+        $this->api('GET', '/agent/pending')->assertJsonCount(0, 'items');
+        $this->move($id, 'In progress')->assertStatus(409);
+    }
+
+    public function test_the_agent_cannot_approve_its_own_tickets(): void
+    {
+        [$ts, $id] = $this->proposedCard(User::factory()->create());
+        $this->api('POST', '/slack/chat.postMessage', ['text' => 'approve', 'thread_ts' => $ts])->assertOk();
+        $this->api('GET', '/agent/pending')->assertJsonCount(0, 'items');
+        $this->move($id, 'In progress')->assertStatus(409);
+    }
+
+    public function test_next_round_marks_fixed_and_still_failing(): void
+    {
+        $reviewer = User::factory()->create();
+        [$ts, $id] = $this->proposedCard(User::factory()->create(), ['Test A fails', 'Test B fails']);
+        $this->reply($reviewer, $ts, 'approve');
+        $this->move($id, 'In progress')->assertOk();
+
+        // Round 2: A is fixed, B still fails, and C is new.
+        $res = $this->tickets($id, ['Test B fails', 'Test C fails'])->assertCreated();
+        $byRound = collect($res->json('card.tickets'))->map(fn ($t) => "{$t['round']} {$t['title']}: {$t['status']}")->all();
+        $this->assertSame([
+            '1 Test A fails: Fixed', '1 Test B fails: Still failing',
+            '2 Test B fails: Proposed', '2 Test C fails: Proposed',
+        ], $byRound);
+
+        // Round 3 passes: an empty list closes round 2... once it is approved and Open.
+        $this->move($id, 'Tickets proposed')->assertOk();
+        $this->travel(1)->seconds();
+        $this->reply($reviewer, $ts, 'Approve');
+        $this->move($id, 'In progress')->assertOk();
+        $res = $this->tickets($id, [])->assertOk();
+        $this->assertSame(['Fixed', 'Still failing', 'Fixed', 'Fixed'], array_column($res->json('card.tickets'), 'status'));
+        $this->move($id, 'Waiting approval')->assertOk();
+    }
+
+    public function test_rejecting_the_tickets_drops_them(): void
+    {
+        [, $id] = $this->proposedCard(User::factory()->create());
+        $res = $this->move($id, 'Failed')->assertOk();
+        $this->assertSame(['Dropped', 'Dropped'], array_column($res->json('card.tickets'), 'status'));
+    }
+
+    public function test_ticket_rounds_are_capped(): void
+    {
+        $reviewer = User::factory()->create();
+        [$ts, $id] = $this->proposedCard(User::factory()->create(), ['Round 1 failure']);
+        for ($round = 2; $round <= BoardCard::MAX_TICKET_ROUNDS + 1; $round++) {
+            $this->reply($reviewer, $ts, 'approve');
+            $this->move($id, 'In progress')->assertOk();
+            $res = $this->tickets($id, ["Round {$round} failure"]);
+            if ($round > BoardCard::MAX_TICKET_ROUNDS) {
+                $res->assertStatus(409)->assertJsonPath('error', 'too_many_rounds');
+                break;
+            }
+            $res->assertCreated();
+            $this->move($id, 'Tickets proposed')->assertOk();
+            $this->travel(1)->seconds();
+        }
+        $this->tickets($id, [])->assertOk();   // closing a round is always allowed
+    }
+
+    public function test_tickets_validation_and_status_rules(): void
+    {
+        $id = $this->card($this->request(User::factory()->create()));
+        $this->tickets($id, ['A failing test'])->assertStatus(409)->assertJsonPath('error', 'bad_status: New');
+        $this->move($id, 'In progress')->assertOk();
+        $this->api('POST', "/board/cards/{$id}/tickets", [])->assertStatus(422);
+        $this->api('POST', "/board/cards/{$id}/tickets", ['tickets' => [['title' => 'x']]])->assertStatus(422);
+        $this->api('POST', "/board/cards/{$id}/tickets", ['tickets' => [['title' => str_repeat('a', 201)]]])->assertStatus(422);
+        $this->api('POST', "/board/cards/{$id}/tickets", ['tickets' => [['title' => 'ok title', 'detail' => str_repeat('d', 2001)]]])->assertStatus(422);
+        $this->api('POST', "/board/cards/{$id}/tickets", ['tickets' => array_fill(0, 11, ['title' => 'many'])])->assertStatus(422);
+        $this->api('POST', '/board/cards/999/tickets', ['tickets' => []])->assertStatus(404);
+        $this->withToken('wrong')->postJson("/api/board/cards/{$id}/tickets", ['tickets' => []])->assertStatus(401);
+    }
+
+    public function test_a_failed_live_check_can_propose_tickets_from_deploying(): void
+    {
+        $reviewer = User::factory()->create();
+        [$ts, $id] = $this->waitingCard(User::factory()->create());
+        $this->reply($reviewer, $ts, 'approve');
+        $this->move($id, 'Deploying')->assertOk();
+        $this->travel(1)->seconds();
+        $this->tickets($id, ['Live: chat route broken'])->assertCreated();
+        $this->move($id, 'Tickets proposed')->assertOk();
+        $this->travel(1)->seconds();
+
+        // The earlier deploy approval does not approve the tickets...
+        $this->move($id, 'In progress')->assertStatus(409);
+        // ...and after the fix, the deploy needs a fresh approve too.
+        $this->reply($reviewer, $ts, 'approve');
+        $this->move($id, 'In progress')->assertOk();
+        $this->travel(5)->minutes();   // the fix run and its gates
+        $this->move($id, 'Waiting approval')->assertOk();
+        $this->move($id, 'Deploying')->assertStatus(409)->assertJsonPath('error', 'not_approved');
+    }
+
+    public function test_ticket_text_is_escaped_on_the_board(): void
+    {
+        [, $id] = $this->proposedCard(User::factory()->create(), ['<img src=x onerror=alert(1)> test']);
+        $this->get('/board')->assertOk()->assertSee('&lt;img src=x onerror=alert(1)&gt; test', false)
+            ->assertDontSee('<img src=x onerror', false);
+    }
+
     public function test_board_page_shows_cards_escaped(): void
     {
         $ts = $this->request(User::factory()->create());

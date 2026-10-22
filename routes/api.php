@@ -17,4 +17,5 @@ Route::middleware([AgentToken::class, 'throttle:api'])->group(function () {
     Route::get('/board/cards', [AgentController::class, 'cards']);
     Route::post('/board/cards', [AgentController::class, 'createCard']);
     Route::patch('/board/cards/{card}', [AgentController::class, 'updateCard']);
+    Route::post('/board/cards/{card}/tickets', [AgentController::class, 'proposeTickets']);
 });

@@ -17,6 +17,8 @@ use Illuminate\Support\Carbon;
  *                 :white_check_mark: reaction from a signed-in person
  *   reply       - a card that needs info got a reply from a person
  *   retry       - a failed card got a "retry" reply, and has attempts left
+ *   tickets_approval - a card whose tests failed has proposed tickets, and a
+ *                 signed-in person replied "approve" to have them fixed
  */
 class AgentQueue
 {
@@ -33,7 +35,15 @@ class AgentQueue
                 $items[] = ['kind' => 'new_request', 'request_ts' => $m->ts, 'card_id' => null, 'user_name' => $m->author, 'text' => $m->text];
             });
 
-        foreach (BoardCard::whereIn('status', ['Waiting approval', 'Needs info', 'Failed'])->get() as $card) {
+        foreach (BoardCard::whereIn('status', ['Waiting approval', 'Tickets proposed', 'Needs info', 'Failed'])->get() as $card) {
+            if ($card->status === 'Tickets proposed') {
+                $approval = $this->ticketsApproval($card);
+                if ($approval['approved']) {
+                    $items[] = ['kind' => 'tickets_approval', 'request_ts' => $card->request_ts, 'card_id' => $card->id, 'user_name' => $approval['approved_by'], 'text' => $approval['evidence']];
+                }
+
+                continue;
+            }
             if ($card->status === 'Waiting approval') {
                 $approval = $this->approval($card);
                 if ($approval['approved']) {
@@ -84,6 +94,27 @@ class AgentQueue
         }
 
         return $none;
+    }
+
+    /**
+     * Has a signed-in person approved the proposed tickets since they were posted?
+     * Only an "approve" reply in the thread counts (not a reaction), so the
+     * request's earlier deploy approval can never be mistaken for this one.
+     *
+     * @return array{approved: bool, approved_by: ?string, evidence: ?string, at: ?string}
+     */
+    public function ticketsApproval(BoardCard $card): array
+    {
+        $none = ['approved' => false, 'approved_by' => null, 'evidence' => null, 'at' => null];
+        if ($card->status !== 'Tickets proposed' || ! $card->status_changed_at) {
+            return $none;
+        }
+        $reply = $this->humanRepliesSince($card)->first(fn ($r) => preg_match('/^\s*approved?\b/i', $r->text));
+        if (! $reply) {
+            return $none;
+        }
+
+        return ['approved' => true, 'approved_by' => $reply->author, 'evidence' => 'thread reply: '.$reply->text, 'at' => $reply->created_at->toIso8601String()];
     }
 
     private function humanRepliesSince(BoardCard $card, ?Carbon $since = null)

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * One change request on the public /board, created and updated only by
@@ -10,7 +11,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BoardCard extends Model
 {
-    public const STATUSES = ['New', 'In progress', 'Needs info', 'Waiting approval', 'Deploying', 'Deployed', 'Failed'];
+    public const STATUSES = ['New', 'In progress', 'Needs info', 'Tickets proposed', 'Waiting approval', 'Deploying', 'Deployed', 'Failed'];
+
+    /** How many rounds of failure tickets one request may have before it is left Failed. */
+    public const MAX_TICKET_ROUNDS = 5;
 
     protected $fillable = [
         'request_ts', 'title', 'request_text', 'requested_by', 'status', 'status_changed_at', 'waiting_since',
@@ -32,6 +36,11 @@ class BoardCard extends Model
         return ChannelMessage::where('ts', $this->request_ts)->first();
     }
 
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(BoardTicket::class)->orderBy('round')->orderBy('id');
+    }
+
     public function toApi(): array
     {
         return [
@@ -50,6 +59,7 @@ class BoardCard extends Model
             'approved_by' => $this->approved_by,
             'deployed_at' => $this->deployed_at?->toIso8601String(),
             'notes' => $this->notes,
+            'tickets' => $this->tickets->map->toApi()->values()->all(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];
     }

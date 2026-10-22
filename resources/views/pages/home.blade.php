@@ -50,6 +50,7 @@
                 <li>Full Circle Agent replies in the thread, changes the code and runs the tests.</li>
                 <li>Progress shows on the public <a href="{{ route('board') }}">board</a>.</li>
                 <li>A signed-in user approves in the thread, and only then does the change go live.</li>
+                <li>Any test failures generate proposed tickets which, if approved, get created and attended to by Claude Code, followed by testing again. This repeats until no failures are observed.</li>
             </ol>
         </div>
         <div class="note">
