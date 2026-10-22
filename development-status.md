@@ -1,7 +1,7 @@
  # Development Status - Saltmarsh Hotel test site (Full Circle Agent v1)
 
 ## Last Updated
-**Date**: 2026-10-22 13:30 SAST
+**Date**: 2026-10-22 17:40 SAST
 **Session Duration**: several hours over 2026-10-20 to 2026-10-22
 **Claude Code Session**: "go build" for v1 of the plan; then "seperate the test website and the sdlc system" (2026-10-22)
 
@@ -38,6 +38,7 @@
 
 ## Technical Details
 ### Recent Changes
+- 54e2068 on branch `fix/json-ld-context` (17:35 SAST): Laravel 13 Blade treats `@context` as a directive even inside `{!! !!}` and in a Blade comment, so the layout's JSON-LD had a key of compiled PHP. Built as `'@'.'context'`; `SecurityHeadersTest::test_json_ld_is_valid_structured_data` parses it on `/` and `/rooms`. Merge into `main` after card #6 deploys.
 - **Ticket loop** (owner's request, 2026-10-22, commit a8eef71, live 08:05 SAST): when the agent's tests fail, it proposes
   one ticket per failure; once a signed-in person replies "approve" in the thread, Claude Code fixes them on the same
   branch and the tests run again, up to 5 rounds, until nothing fails. New: `board_tickets` table and `BoardTicket` model,
@@ -84,6 +85,7 @@
 ### Test score log
 | Date (SAST) | PHPUnit | Pint | Playwright (3 browsers) | Notes |
 |---|---|---|---|---|
+| 2026-10-22 17:35 | 44/44 | pass | not re-run (layout-only change) | Branch `fix/json-ld-context` (54e2068): JSON-LD `@context` fix and test. Kept off `main` until card #6 (Lake View) is approved and merged, so its merge stays a fast-forward |
 | 2026-10-20 | 68/68 | pass | 90 passed, 10 failed | The failures were in the WebKit CSP screenshot and the session race |
 | 2026-10-21 | 68/68 (596 assertions) | pass | 100 passed, 2 skipped (live only), 0 failed, 2.6 min | Fixed. The re-run of the menu tests was 9/9 |
 | 2026-10-21 15:04 | - | - | LIVE: 61 passed, 41 skipped, 0 failed, 5.3 min | `npm run e2e:live` against the deployed site |
