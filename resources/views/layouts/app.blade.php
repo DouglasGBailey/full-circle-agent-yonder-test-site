@@ -44,7 +44,9 @@
     <meta name="twitter:site" content="@TerminalVelocityAI">
 
     <script type="application/ld+json">{!! json_encode([
-        '@context' => 'https://schema.org',
+        // The key is split in two: written whole, Blade takes it for its own 'context' directive
+        // (even inside this raw echo) and writes compiled PHP into the JSON-LD.
+        '@'.'context' => 'https://schema.org',
         '@type' => 'WebSite',
         'name' => 'Saltmarsh Hotel (test site)',
         'url' => $base.'/',

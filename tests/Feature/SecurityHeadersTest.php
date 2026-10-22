@@ -58,4 +58,17 @@ class SecurityHeadersTest extends TestCase
         $this->assertStringContainsString('Sitemap:', file_get_contents(public_path('robots.txt')));   // static file, served by the web server
         $this->get('/no-such-page')->assertNotFound();
     }
+
+    public function test_json_ld_is_valid_structured_data(): void
+    {
+        foreach (['/', '/rooms'] as $path) {
+            $html = $this->get($path)->getContent();
+            $this->assertSame(1, preg_match('#<script type="application/ld\+json">(.*?)</script>#s', $html, $m), $path);
+            $data = json_decode($m[1], true);
+            $this->assertIsArray($data, "{$path}: the JSON-LD parses");
+            $this->assertSame('https://schema.org', $data['@context'] ?? null, "{$path}: @context");
+            $this->assertStringNotContainsString('<?php', $m[1], $path);
+            $this->assertStringNotContainsString('__context', $html, $path);
+        }
+    }
 }
