@@ -124,6 +124,18 @@ test('rooms: check-in and check-out times sit just under the three room cards', 
     expect(timesTop).toBeGreaterThan(cardsBottom);
 });
 
+test('rooms: the late check-out line sits just under the check-in times', async ({ page }) => {
+    await page.goto('/rooms');
+    const times = page.locator('.room-times');
+    const late = page.getByText('Late check-out until 12:00 is available on request.', { exact: true });
+    await expect(late).toBeVisible();
+    const timesBottom = await times.evaluate((el) => el.getBoundingClientRect().bottom);
+    const lateTop = await late.evaluate((el) => el.getBoundingClientRect().top);
+    expect(lateTop).toBeGreaterThanOrEqual(timesBottom);
+    const noteTop = await page.locator('.note').evaluate((el) => el.getBoundingClientRect().top);
+    expect(lateTop).toBeLessThan(noteTop);
+});
+
 test('unknown page: friendly 404 with the site layout', async ({ page }) => {
     const res = await page.goto('/no-such-page');
     expect(res.status()).toBe(404);
