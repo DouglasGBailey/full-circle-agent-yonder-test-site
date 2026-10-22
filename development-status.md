@@ -1,8 +1,8 @@
  # Development Status - Saltmarsh Hotel test site (Full Circle Agent v1)
 
 ## Last Updated
-**Date**: 2026-10-22 06:55 SAST
-**Session Duration**: several hours over 2026-10-20 and 2026-10-21
+**Date**: 2026-10-22 08:15 SAST
+**Session Duration**: several hours over 2026-10-20 to 2026-10-22
 **Claude Code Session**: "go build" for v1 of the plan, `full-circle-agent-v1-plan.md`
 
 ## Current Project State
@@ -11,7 +11,7 @@
 - The fixed-rules chatbot follows both Lucid routes, unregistered and registered, word for word as in `tests/e2e/expected/`.
 - Pilot sign-in, with a rate limit and a honeypot. `php artisan pilot:accounts` creates the accounts.
 - `/channel` is the simulated Slack channel `#yonder-requests`. You can post, reply in threads and react. It refreshes every 5 seconds.
-- `/board` shows the agent's public cards.
+- `/board` shows the agent's public cards, and under each card the tickets raised from failed tests (round, title, status, who approved).
 - The agent API is shaped like Slack. It requires a bearer token, returns 503 if the token is missing or short and 401 if it is wrong, and is rate limited.
 - Security headers: a strict CSP with no `unsafe-inline`, HSTS on HTTPS, DENY framing, nosniff, Referrer-Policy and Permissions-Policy.
 
@@ -36,6 +36,12 @@
 
 ## Technical Details
 ### Recent Changes
+- **Ticket loop** (owner's request, 2026-10-22, commit a8eef71, live 08:05 SAST): when the agent's tests fail, it proposes
+  one ticket per failure; once a signed-in person replies "approve" in the thread, Claude Code fixes them on the same
+  branch and the tests run again, up to 5 rounds, until nothing fails. New: `board_tickets` table and `BoardTicket` model,
+  `POST /api/board/cards/{id}/tickets` (bearer token, 409 `too_many_rounds` after 5), card status "Tickets proposed",
+  `AgentQueue` work kind `tickets_approval` (only an "approve" reply counts, never a reaction), the ticket list on
+  `/board`, and step 5 on the home page. PHPUnit covers the API, the queue and the board.
 - Contact page (owner's request, 2026-10-22): "ask Douglas Bailey for a test account" (was Terminal Velocity AI);
   PHPUnit checks it.
 - Footer (owner's request, 2026-10-21): "Built with love and Claude Code" and the hero photo credit line were removed,
@@ -89,6 +95,8 @@
 | 2026-10-21 19:46 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.5 min | After the deploy of b53ae3b (19:40 SAST) |
 | 2026-10-22 06:50 | 68/68 (601 assertions) | pass | 106 passed, 2 skipped, 0 failed, 1.5 min | Contact page: Douglas Bailey. A first run at load average 58 had 4 Firefox timeouts; they passed alone and on the re-run |
 | 2026-10-22 06:57 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.0 min | After the deploy of 954923d (06:52 SAST) |
+| 2026-10-22 08:03 | 81/81 (743 assertions) | pass | 106 passed, 2 skipped, 0 failed, 1.2 min | Ticket loop |
+| 2026-10-22 08:12 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.9 min | After the deploy of a8eef71 (08:05 SAST); 0 console errors on 6 pages in 3 browsers |
 
 - Screenshots were inspected at 320, 390, 768 and 1280 px in Chromium, Firefox and WebKit.
 - The mobile menu closes on Escape, an outside click, a link click and Back. This was tested.
@@ -107,4 +115,5 @@
 
 ### Warnings/Cautions
 - Never use `rm` or `mv`. Browsers must run headless. On chrisweb, touch only this site's container and its nginx conf, and back up the confs first.
+- In WebKit, `page.screenshot` logs a CSP "Refused to apply a stylesheet" error: that is Playwright's caret-hiding style, not the site.
 - Before running the tests, free port 8001 with `lsof -ti tcp:8001 | xargs kill`.
