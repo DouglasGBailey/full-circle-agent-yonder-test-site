@@ -88,6 +88,7 @@
 | 2026-10-21 19:42 | 68/68 (599 assertions) | pass | 106 passed, 2 skipped, 0 failed, 2.3 min | Footer: VML Yonder, two lines removed |
 | 2026-10-21 19:46 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.5 min | After the deploy of b53ae3b (19:40 SAST) |
 | 2026-10-22 06:50 | 68/68 (601 assertions) | pass | 106 passed, 2 skipped, 0 failed, 1.5 min | Contact page: Douglas Bailey. A first run at load average 58 had 4 Firefox timeouts; they passed alone and on the re-run |
+| 2026-10-22 06:58 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.0 min | After the deploy of 954923d (06:52 SAST) |
 
 - Screenshots were inspected at 320, 390, 768 and 1280 px in Chromium, Firefox and WebKit.
 - The mobile menu closes on Escape, an outside click, a link click and Back. This was tested.
