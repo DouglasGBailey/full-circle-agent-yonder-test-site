@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Sign in - Saltmarsh Hotel test site')
-@section('description', 'Sign in with a Full Circle Agent pilot test account to post change requests, approve deploys and book test rooms in the Saltmarsh Hotel chat.')
+@section('description', 'Sign in with a Full Circle Agent pilot test account to book test rooms and restaurant tables in the Saltmarsh Hotel chat. Nothing is charged.')
 @section('path', '/login')
 
 @section('content')

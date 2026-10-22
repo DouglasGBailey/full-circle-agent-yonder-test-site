@@ -12,8 +12,6 @@
         ['rooms', 'Rooms'],
         ['restaurant', 'Restaurant'],
         ['contact', 'Contact'],
-        ['channel', 'Channel'],
-        ['board', 'Board'],
     ];
 @endphp
 <!DOCTYPE html>
@@ -118,8 +116,7 @@
             <a href="{{ route('rooms') }}">Rooms</a>
             <a href="{{ route('restaurant') }}">Restaurant</a>
             <a href="{{ route('contact') }}">Contact</a>
-            <a href="{{ route('channel') }}">Channel</a>
-            <a href="{{ route('board') }}">Board</a>
+            <a href="https://yonder-full-circle-sdlc.terminalvelocityai.tech/channel?project=yonder-test-site">Change requests</a>
             <a href="{{ route('sitemap') }}">Sitemap</a>
         </nav>
         <div class="site-footer__legal">

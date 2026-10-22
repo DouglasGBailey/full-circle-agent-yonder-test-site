@@ -6,7 +6,7 @@ import { shoot, watchConsole } from './helpers.js';
 
 const PAGES = [
     ['home', '/'], ['rooms', '/rooms'], ['restaurant', '/restaurant'], ['contact', '/contact'],
-    ['channel', '/channel'], ['board', '/board'], ['login', '/login'],
+    ['login', '/login'],
 ];
 const WIDTHS = [320, 390, 768, 1280];
 const SHOTS = 'tests/e2e/screenshots';
@@ -87,7 +87,7 @@ for (const width of [320, 390, 768]) {
         await closed();
 
         // Each menu link navigates and leaves the menu closed on the new page.
-        for (const label of ['Rooms', 'Restaurant', 'Contact', 'Channel', 'Board', 'Sign in', 'Home']) {
+        for (const label of ['Rooms', 'Restaurant', 'Contact', 'Sign in', 'Home']) {
             await open();
             await nav.getByRole('link', { name: label, exact: true }).click();
             await page.waitForLoadState('domcontentloaded');

@@ -35,9 +35,4 @@ return [
         ],
     ],
 
-    // Full Circle Agent's bearer token for /api (never in the repo; .env only).
-    'full_circle_agent' => [
-        'token' => env('FCA_API_TOKEN'),
-    ],
-
 ];

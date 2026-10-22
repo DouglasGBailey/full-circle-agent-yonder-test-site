@@ -21,7 +21,7 @@ class AuthTest extends TestCase
         $this->get('/login')->assertOk()->assertSee('name="website"', false);
     }
 
-    public function test_good_login_goes_to_channel_and_clears_chat_state(): void
+    public function test_good_login_goes_home_and_clears_chat_state(): void
     {
         $this->user();
         $this->keepSession();
@@ -29,7 +29,7 @@ class AuthTest extends TestCase
         $this->assertDatabaseCount('chat_states', 1);
 
         $this->post('/login', ['email' => 'Reviewer.Pilot@example.com', 'password' => 'correct-horse-battery'])
-            ->assertRedirect(route('channel'));
+            ->assertRedirect(route('home'));
         $this->assertAuthenticated();
         $this->assertDatabaseCount('chat_states', 0);
     }

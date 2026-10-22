@@ -2,8 +2,7 @@
 //
 //   npm run e2e         local throwaway server on 127.0.0.1:8001 (tests/e2e/serve.sh);
 //                       E2E_PORT and E2E_STATE_DIR move it, so two runs can share a Mac
-//   npm run e2e:live    the live site; needs E2E_GUEST_PASSWORD (and E2E_API_TOKEN
-//                       for the channel and board test) in the environment
+//   npm run e2e:live    the live site; needs E2E_GUEST_PASSWORD in the environment
 //
 // Browsers always run headless: never pass --headed.
 import { defineConfig, devices } from '@playwright/test';

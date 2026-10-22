@@ -13,7 +13,7 @@ class SecurityHeadersTest extends TestCase
 
     public function test_pages_render_with_security_headers(): void
     {
-        foreach (['/', '/rooms', '/restaurant', '/contact', '/login', '/channel', '/board'] as $path) {
+        foreach (['/', '/rooms', '/restaurant', '/contact', '/login'] as $path) {
             $res = $this->get($path)->assertOk();
             $res->assertHeader('X-Frame-Options', 'DENY')
                 ->assertHeader('X-Content-Type-Options', 'nosniff')

@@ -6,7 +6,6 @@ import path from 'node:path';
 
 export const LIVE = Boolean(process.env.E2E_BASE_URL);
 export const STATE_DIR = process.env.E2E_STATE_DIR || path.join(process.env.TMPDIR || os.tmpdir(), 'saltmarsh-e2e');
-export const API_TOKEN = process.env.E2E_API_TOKEN || (LIVE ? '' : 'e2e-local-token-not-a-secret-32chars-min');
 
 /** A test account's password: from the environment, else from serve.sh's accounts file. */
 export function passwordFor(email) {

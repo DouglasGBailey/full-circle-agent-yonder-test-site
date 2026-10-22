@@ -35,7 +35,7 @@ class AuthController extends Controller
         ChatState::forget($guestSessionId);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('channel'));
+        return redirect()->intended(route('home'));
     }
 
     public function logout(Request $request): RedirectResponse

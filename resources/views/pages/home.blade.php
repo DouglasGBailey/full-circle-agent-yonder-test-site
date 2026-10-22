@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Saltmarsh Hotel - rooms, restaurant and chat test site')
-@section('description', 'Saltmarsh Hotel is a test hotel and restaurant website with a fixed-rules chatbot, a simulated Slack channel and a request board for the Full Circle Agent pilot.')
+@section('description', 'Saltmarsh Hotel is a test hotel and restaurant website with a fixed-rules chatbot, built and changed by Full Circle Agent in the VML Yonder pilot.')
 @section('path', '/')
 
 @section('content')
@@ -10,7 +10,7 @@
     <div class="hero__inner">
         <p class="eyebrow">Test site &middot; Full Circle Agent pilot</p>
         <h1 class="hero__title">Quiet rooms on the edge of the salt marsh</h1>
-        <p class="hero__lead">Stay a night or two, eat at the Saltmarsh Grill, and ask our assistant anything. Change requests for this site go into the channel, and Full Circle Agent builds them.</p>
+        <p class="hero__lead">Stay a night or two, eat at the Saltmarsh Grill, and ask our assistant anything. Change requests for this site go into the <a href="https://yonder-full-circle-sdlc.terminalvelocityai.tech/channel?project=yonder-test-site">Full Circle SDLC channel</a>, and Full Circle Agent builds them.</p>
         <div class="hero__actions">
             <a class="btn btn--primary" href="{{ route('rooms') }}">See rooms and rates</a>
             <button type="button" class="btn btn--ghost" data-chat-open>Chat with us</button>
@@ -46,9 +46,9 @@
         <div>
             <h2 class="section__title">How the pilot works</h2>
             <ol class="steps">
-                <li>A signed-in test user posts a change request in the <a href="{{ route('channel') }}">channel</a>.</li>
+                <li>A signed-in test user posts a change request in the <a href="https://yonder-full-circle-sdlc.terminalvelocityai.tech/channel?project=yonder-test-site">Full Circle SDLC channel</a>.</li>
                 <li>Full Circle Agent replies in the thread, changes the code and runs the tests.</li>
-                <li>Progress shows on the public <a href="{{ route('board') }}">board</a>.</li>
+                <li>Progress shows on the public <a href="https://yonder-full-circle-sdlc.terminalvelocityai.tech/board?project=yonder-test-site">board</a>.</li>
                 <li>A signed-in user approves in the thread, and only then does the change go live.</li>
                 <li>Any test failures generate proposed tickets which, if approved, get created and attended to by Claude Code, followed by testing again. This repeats until no failures are observed.</li>
             </ol>

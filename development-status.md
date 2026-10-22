@@ -1,18 +1,20 @@
  # Development Status - Saltmarsh Hotel test site (Full Circle Agent v1)
 
 ## Last Updated
-**Date**: 2026-10-22 08:15 SAST
+**Date**: 2026-10-22 13:30 SAST
 **Session Duration**: several hours over 2026-10-20 to 2026-10-22
-**Claude Code Session**: "go build" for v1 of the plan, `full-circle-agent-v1-plan.md`
+**Claude Code Session**: "go build" for v1 of the plan; then "seperate the test website and the sdlc system" (2026-10-22)
 
 ## Current Project State
 ### What's Working
 - The hotel site: home, rooms, restaurant, contact, sitemap and robots. It loads in dark mode by default, with an iPhone-style theme switch, a Verdana H1, an SVG logo that is also the favicon, full SEO with JSON-LD, the required footer, and a local hero photo (credited in CREDITS).
 - The fixed-rules chatbot follows both Lucid routes, unregistered and registered, word for word as in `tests/e2e/expected/`.
 - Pilot sign-in, with a rate limit and a honeypot. `php artisan pilot:accounts` creates the accounts.
-- `/channel` is the simulated Slack channel `#yonder-requests`. You can post, reply in threads and react. It refreshes every 5 seconds.
-- `/board` shows the agent's public cards, and under each card the tickets raised from failed tests (round, title, status, who approved).
-- The agent API is shaped like Slack. It requires a bearer token, returns 503 if the token is missing or short and 401 if it is wrong, and is rate limited.
+- **Split from the SDLC system (2026-10-22):** the channel, board and agent API moved to the Full Circle SDLC app
+  (https://yonder-full-circle-sdlc.terminalvelocityai.tech, private repo `full-circle-agent-sdlc`). Here they are
+  removed (`git rm`: controllers, models, `AgentQueue`, `AgentToken`, `routes/api.php`, channel/board views,
+  `channel.js`, their migrations and tests) and `/channel`, `/board`, `/api/*` return 404. The home hero, "How the
+  pilot works" and the footer ("Change requests") link to the SDLC channel and board for `?project=yonder-test-site`.
 - Security headers: a strict CSP with no `unsafe-inline`, HSTS on HTTPS, DENY framing, nosniff, Referrer-Policy and Permissions-Policy.
 
 - Pushed to the **public** repo https://github.com/DouglasGBailey/full-circle-agent-yonder-test-site and deployed to chrisweb
@@ -29,7 +31,7 @@
   (git-ignored, not pushed).
 
 ### What's In Progress
-- Nothing. Ready for the pilot.
+- Nothing on this site. The live DB still holds the old channel/board tables (unused; the data was copied to the SDLC app).
 
 ### What's Next
 1. Run the 3-day pilot. The targets are 5 or more deployed requests, 0 unapproved deploys, and under 30 minutes from message to live.
@@ -69,14 +71,13 @@
 ## File Structure Status
 ### Key Files Location
 - Chatbot rules: `app/Services/` and `app/Http/Controllers/ChatController.php`
-- Channel and board: `app/Http/Controllers/ChannelController.php`, `BoardController.php` and `Api/*`
-- Middleware: `app/Http/Middleware/AgentToken.php` and `SecurityHeaders.php`
-- Front end: `public/css/site.css` and `public/js/site.js`, `channel.js`
+- Middleware: `app/Http/Middleware/SecurityHeaders.php`
+- Front end: `public/css/site.css` and `public/js/site.js`
 - End-to-end tests: `tests/e2e/*.spec.js`, `helpers.js`, `serve.sh`, `expected/*.json`
 
 ### Dependencies
 - Composer: Laravel 13 and PHPUnit 12. npm: `@playwright/test` 1.64.1 (dev only).
-- Environment: `FCA_API_TOKEN` (32 or more characters). It is never committed.
+- Environment: no agent token any more (`FCA_API_TOKEN` belongs to the SDLC app).
 
 ## Testing Status
 
@@ -97,6 +98,7 @@
 | 2026-10-22 06:57 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.0 min | After the deploy of 954923d (06:52 SAST) |
 | 2026-10-22 08:03 | 81/81 (743 assertions) | pass | 106 passed, 2 skipped, 0 failed, 1.2 min | Ticket loop |
 | 2026-10-22 08:12 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.9 min | After the deploy of a8eef71 (08:05 SAST); 0 console errors on 6 pages in 3 browsers |
+| 2026-10-22 13:20 | 43/43 (418 assertions, 1.9 s) | pass | 99 passed, 0 failed, 1.7 min | SDLC split: 38 PHPUnit and 7 e2e tests moved out with the channel/board/API (they run in the SDLC repo, 74/74 there); +1 test that those paths 404 here. No regression in the remaining tests |
 
 - Screenshots were inspected at 320, 390, 768 and 1280 px in Chromium, Firefox and WebKit.
 - The mobile menu closes on Escape, an outside click, a link click and Back. This was tested.
@@ -109,7 +111,7 @@
 - The repo is public, so there must be no secrets. Run the secret scan before every push.
 
 ### Immediate Priorities
-1. Run the pilot; watch `/board`.
+1. Run the pilot; watch the SDLC `/board?project=yonder-test-site`.
 2. Free disk space on the Mac (2.9 GB free).
 3. The chatbot's dish list does not yet mention the new curry (agent's note; out of the dry run's scope).
 

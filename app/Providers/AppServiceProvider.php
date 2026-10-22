@@ -28,8 +28,5 @@ class AppServiceProvider extends ServiceProvider
             Limit::perHour(30)->by('login-h:'.$r->ip()),
         ]);
         RateLimiter::for('chat', fn (Request $r) => Limit::perMinute(40)->by('chat:'.$r->ip()));
-        RateLimiter::for('feed', fn (Request $r) => Limit::perMinute(60)->by('feed:'.$r->ip()));
-        RateLimiter::for('channel', fn (Request $r) => Limit::perMinute(12)->by('channel:'.($r->user()?->id ?? $r->ip())));
-        RateLimiter::for('api', fn (Request $r) => Limit::perMinute(240)->by('api:'.$r->ip()));
     }
 }

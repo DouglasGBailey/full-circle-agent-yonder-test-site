@@ -19,7 +19,6 @@ mkdir -p "$STATE_DIR"
 export APP_ENV=local APP_DEBUG=false APP_URL="http://127.0.0.1:${PORT}"
 export DB_CONNECTION=sqlite DB_DATABASE="$STATE_DIR/e2e.sqlite"
 export CACHE_STORE=array SESSION_DRIVER=database
-export FCA_API_TOKEN="${E2E_API_TOKEN:-e2e-local-token-not-a-secret-32chars-min}"
 
 php artisan migrate --force --no-interaction >/dev/null
 php artisan pilot:accounts --reset --out="$STATE_DIR/accounts.txt" >/dev/null
