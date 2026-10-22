@@ -50,6 +50,10 @@ class SecurityHeadersTest extends TestCase
         $this->assertStringNotContainsString('Hero photo:', $html);
         // The company name is VML Yonder (owner's request, 2026-10-21).
         $this->assertStringNotContainsString('Terminal Velocity AI. All rights reserved.', $html);
+        // Pilot test accounts come from Douglas Bailey (owner's request, 2026-10-22).
+        $contact = $this->get('/contact')->getContent();
+        $this->assertStringContainsString('ask Douglas Bailey for a test account.', $contact);
+        $this->assertStringNotContainsString('Terminal Velocity AI', $contact);
         $this->get('/sitemap.xml')->assertOk();
         $this->assertStringContainsString('Sitemap:', file_get_contents(public_path('robots.txt')));   // static file, served by the web server
         $this->get('/no-such-page')->assertNotFound();

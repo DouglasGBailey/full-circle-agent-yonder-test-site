@@ -1,7 +1,7 @@
-# Development Status - Saltmarsh Hotel test site (Full Circle Agent v1)
+ # Development Status - Saltmarsh Hotel test site (Full Circle Agent v1)
 
 ## Last Updated
-**Date**: 2026-10-21 19:45 SAST
+**Date**: 2026-10-22 06:55 SAST
 **Session Duration**: several hours over 2026-10-20 and 2026-10-21
 **Claude Code Session**: "go build" for v1 of the plan, `full-circle-agent-v1-plan.md`
 
@@ -36,6 +36,8 @@
 
 ## Technical Details
 ### Recent Changes
+- Contact page (owner's request, 2026-10-22): "ask Douglas Bailey for a test account" (was Terminal Velocity AI);
+  PHPUnit checks it.
 - Footer (owner's request, 2026-10-21): "Built with love and Claude Code" and the hero photo credit line were removed,
   and the copyright line is now "© 2026 VML Yonder. All rights reserved." (no link). The author meta and the JSON-LD
   publisher are VML Yonder too. This overrides the global footer rule for this site. The photo's provenance stays in
@@ -85,6 +87,7 @@
 | 2026-10-21 17:55 | - | - | LIVE: 67 passed, 41 skipped, 0 failed | After the filmed deploy of c83b208 |
 | 2026-10-21 19:42 | 68/68 (599 assertions) | pass | 106 passed, 2 skipped, 0 failed, 2.3 min | Footer: VML Yonder, two lines removed |
 | 2026-10-21 19:46 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.5 min | After the deploy of b53ae3b (19:40 SAST) |
+| 2026-10-22 06:50 | 68/68 (601 assertions) | pass | 106 passed, 2 skipped, 0 failed, 1.5 min | Contact page: Douglas Bailey. A first run at load average 58 had 4 Firefox timeouts; they passed alone and on the re-run |
 
 - Screenshots were inspected at 320, 390, 768 and 1280 px in Chromium, Firefox and WebKit.
 - The mobile menu closes on Escape, an outside click, a link click and Back. This was tested.
