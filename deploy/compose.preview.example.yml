@@ -1,0 +1,13 @@
+# The demo (preview) site: a copy of this file lives on chrisweb as
+# ~/apps/yonder-test-site-preview/compose.preview.yml. Full Circle Agent's deployPreview checks out the
+# branch's commit in ~/apps/yonder-test-site-preview/src and runs, from src/deploy:
+#   docker compose -p yonder-test-site-preview -f docker-compose.yml -f ../../compose.preview.yml up -d --build
+# The live compose file's relative paths (../../data, ../../.env) then resolve inside the
+# preview folder, so the demo has its own database copy and settings.
+# The separate image tag matters: without it a demo build would replace the live image.
+services:
+  app:
+    image: yonder-test-site-preview:latest
+    container_name: yonder-test-site-preview
+    ports: !override
+      - "172.17.0.1:8881:80"
