@@ -96,8 +96,10 @@ for (const width of [320, 390, 768]) {
         await expect(page).toHaveURL(/\/$/);
 
         // Back (including a page restored from the back-forward cache).
+        // Firefox can restore the page from the bfcache without a fresh load event,
+        // so goBack() only waits for the commit; the checks below still wait for the page.
         await open();
-        await page.goBack();
+        await page.goBack({ waitUntil: 'commit' });
         await page.waitForLoadState('domcontentloaded');
         await closed();
         await expect(page).toHaveURL(/\/login$/);
@@ -113,9 +115,17 @@ test("restaurant: Tonight's menu lists the Cape Malay chicken curry just before 
     ]);
 });
 
-test('rooms: check-in and check-out times sit just under the three room cards', async ({ page }) => {
+test('rooms: the Lake View room is listed at R2230 a night', async ({ page }) => {
     await page.goto('/rooms');
-    await expect(page.locator('.room')).toHaveCount(3);
+    await expect(page.locator('.room__name')).toHaveText(['Standard', 'Deluxe', 'Sea View', 'Lake View']);
+    const lake = page.locator('.room', { hasText: 'Lake View' });
+    await expect(lake.locator('.room__price')).toHaveText('R2230 a night');
+    await expect(lake).toContainText('Top-floor room with a balcony over the lake.');
+});
+
+test('rooms: check-in and check-out times sit just under the four room cards', async ({ page }) => {
+    await page.goto('/rooms');
+    await expect(page.locator('.room')).toHaveCount(4);
     const times = page.locator('.room-times');
     await expect(times).toBeVisible();
     await expect(times).toHaveText('Check-in is from 14:00 and check-out is by 10:00.');

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Rooms and rates - Saltmarsh Hotel test site')
-@section('description', 'Standard, Deluxe and Sea View rooms at the Saltmarsh Hotel test site, from R1450 a night with breakfast. Sign in and use the chat to book a test room.')
+@section('description', 'Standard, Deluxe, Sea View and Lake View rooms at the Saltmarsh Hotel test site, from R1450 a night with breakfast. Sign in and use the chat to book a test room.')
 @section('path', '/rooms')
 
 @section('content')
@@ -17,6 +17,7 @@
             ['Standard', 'R1450', 'Garden-facing room with a king or twin bed and a walk-in shower.'],
             ['Deluxe', 'R1750', 'A larger room with a reading corner and a deep bath.'],
             ['Sea View', 'R2100', 'Top-floor room with a balcony over the marsh and the sea.'],
+            ['Lake View', 'R2230', 'Top-floor room with a balcony over the lake.'],
         ] as [$name, $price, $text])
             <article class="card room">
                 <h2 class="room__name">{{ $name }}</h2>
