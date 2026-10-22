@@ -246,7 +246,6 @@ code { font: .9em ui-monospace, SFMono-Regular, Menlo, monospace; background: va
 .room__price { font-size: 1.1rem; }
 .room__price strong { color: var(--accent); font-size: 1.4rem; }
 .room-times { margin: 24px 0 0; }
-.room-late { margin: 8px 0 0; }
 
 .note {
     background: var(--surface-2); border-left: 4px solid var(--amber); border-radius: var(--radius-sm);
