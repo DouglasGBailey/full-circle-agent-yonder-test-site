@@ -99,6 +99,7 @@
 | 2026-10-22 08:03 | 81/81 (743 assertions) | pass | 106 passed, 2 skipped, 0 failed, 1.2 min | Ticket loop |
 | 2026-10-22 08:12 | - | - | LIVE: 67 passed, 41 skipped, 0 failed, 5.9 min | After the deploy of a8eef71 (08:05 SAST); 0 console errors on 6 pages in 3 browsers |
 | 2026-10-22 13:20 | 43/43 (418 assertions, 1.9 s) | pass | 99 passed, 0 failed, 1.7 min | SDLC split: 38 PHPUnit and 7 e2e tests moved out with the channel/board/API (they run in the SDLC repo, 74/74 there); +1 test that those paths 404 here. No regression in the remaining tests |
+| 2026-10-22 13:30 | 43/43 | pass | LIVE: 61 passed, 0 failed, 38 skipped by design (chat flows Chromium-only on live), 5.0 min | Split deployed to chrisweb (9b7b2af). Live: all pages 200, /channel /board /api/* 404, http to https 301, CSP/HSTS/XFO/nosniff present, .env and .git 404. Data and nginx confs backed up first |
 
 - Screenshots were inspected at 320, 390, 768 and 1280 px in Chromium, Firefox and WebKit.
 - The mobile menu closes on Escape, an outside click, a link click and Back. This was tested.
