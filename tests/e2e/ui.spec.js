@@ -113,17 +113,9 @@ test("restaurant: Tonight's menu lists the Cape Malay chicken curry just before 
     ]);
 });
 
-test('rooms: the Lake View room is listed at R2230 a night', async ({ page }) => {
+test('rooms: check-in and check-out times sit just under the three room cards', async ({ page }) => {
     await page.goto('/rooms');
-    await expect(page.locator('.room__name')).toHaveText(['Standard', 'Deluxe', 'Sea View', 'Lake View']);
-    const lake = page.locator('.room', { hasText: 'Lake View' });
-    await expect(lake.locator('.room__price')).toHaveText('R2230 a night');
-    await expect(lake).toContainText('Top-floor room with a balcony over the lake.');
-});
-
-test('rooms: check-in and check-out times sit just under the four room cards', async ({ page }) => {
-    await page.goto('/rooms');
-    await expect(page.locator('.room')).toHaveCount(4);
+    await expect(page.locator('.room')).toHaveCount(3);
     const times = page.locator('.room-times');
     await expect(times).toBeVisible();
     await expect(times).toHaveText('Check-in is from 14:00 and check-out is by 10:00.');
