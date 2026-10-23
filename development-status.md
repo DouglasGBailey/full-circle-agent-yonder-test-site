@@ -89,6 +89,7 @@
 ### Test score log
 | Date (SAST) | PHPUnit | Pint | Playwright (3 browsers) | Notes |
 |---|---|---|---|---|
+| 2026-10-23 08:55 | - | - | LIVE: 50 passed, 38 skipped, 1 failed, 3.5 min | After the deploy of 70f993c (08:46 SAST). The 1 failure is the signed-in chat flow: the live run needs E2E_GUEST_PASSWORD from chrisweb pilot-accounts.txt, which was not supplied (not a site defect). Live and preview (db2adf1): all pages 200, author VML Yonder, 0 "Terminal Velocity", no twitter:site, no terminalvelocityai.tech link. Data backed up to ~/apps/tva-backups/yonder-rebrand-20261023-0842 |
 | 2026-10-23 08:44 | 43/43 (430 assertions, 1.9 s) | pass | 99 passed, 0 failed, 2.4 min (main; the card-6 branch is 102/0) | Rebrand: twitter:site and the terminalvelocityai.tech contact link removed; no-branding assertions added |
 | 2026-10-20 | 68/68 | pass | 90 passed, 10 failed | The failures were in the WebKit CSP screenshot and the session race |
 | 2026-10-21 | 68/68 (596 assertions) | pass | 100 passed, 2 skipped (live only), 0 failed, 2.6 min | Fixed. The re-run of the menu tests was 9/9 |
