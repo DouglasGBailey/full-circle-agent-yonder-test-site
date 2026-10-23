@@ -54,6 +54,14 @@ class SecurityHeadersTest extends TestCase
         $contact = $this->get('/contact')->getContent();
         $this->assertStringContainsString('ask Douglas Bailey for a test account.', $contact);
         $this->assertStringNotContainsString('Terminal Velocity AI', $contact);
+        // Douglas Bailey works for VML Yonder as an independent contractor: no Terminal Velocity branding
+        // anywhere (2026-10-23), including the twitter:site handle and the link to terminalvelocityai.tech.
+        foreach (['/', '/rooms', '/restaurant', '/contact'] as $path) {
+            $page = $this->get($path)->getContent();
+            $this->assertStringNotContainsString('Terminal Velocity', $page, "{$path}: Terminal Velocity branding");
+            $this->assertStringNotContainsString('TerminalVelocity', $page, "{$path}: TerminalVelocity handle");
+            $this->assertStringNotContainsString('href="https://terminalvelocityai.tech/"', $page, "{$path}: terminalvelocityai.tech link");
+        }
         $this->get('/sitemap.xml')->assertOk();
         $this->assertStringContainsString('Sitemap:', file_get_contents(public_path('robots.txt')));   // static file, served by the web server
         $this->get('/no-such-page')->assertNotFound();

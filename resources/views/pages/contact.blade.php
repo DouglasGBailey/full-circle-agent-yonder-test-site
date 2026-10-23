@@ -21,7 +21,6 @@
         <article class="card">
             <h2>About this site</h2>
             <p>The Saltmarsh Hotel is fictional. This site exists to test Full Circle Agent for VML Yonder. To take part in the pilot, ask Douglas Bailey for a test account.</p>
-            <p><a class="text-link" href="https://terminalvelocityai.tech/">terminalvelocityai.tech</a></p>
         </article>
     </div>
 </section>

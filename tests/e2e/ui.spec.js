@@ -30,6 +30,12 @@ for (const [name, url] of PAGES) {
             await expect(page.locator('footer')).not.toContainText('Hero photo:');
             await shoot(page, { path: `${SHOTS}/${browserName}-${name}-${width}.png`, fullPage: true });
         }
+        // No Terminal Velocity branding: Douglas Bailey works for VML Yonder as an independent contractor (2026-10-23).
+        const html = await page.content();
+        expect(html).not.toContain('Terminal Velocity');
+        expect(html).not.toContain('TerminalVelocity');
+        await expect(page.locator('a[href="https://terminalvelocityai.tech/"]')).toHaveCount(0);
+        await expect(page.locator('meta[name="author"]')).toHaveAttribute('content', 'VML Yonder');
         expect(errors()).toEqual([]);
     });
 }
