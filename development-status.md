@@ -1,7 +1,7 @@
  # Development Status - Saltmarsh Hotel test site (Full Circle Agent v1)
 
 ## Last Updated
-**Date**: 2026-10-22 13:30 SAST
+**Date**: 2026-10-23 08:40 SAST (rebrand: Terminal Velocity AI removed)
 **Session Duration**: several hours over 2026-10-20 to 2026-10-22
 **Claude Code Session**: "go build" for v1 of the plan; then "seperate the test website and the sdlc system" (2026-10-22)
 
@@ -38,6 +38,11 @@
 
 ## Technical Details
 ### Recent Changes
+- 2026-10-23 08:40 SAST, owner's request: no "Terminal Velocity AI" branding (Douglas Bailey does this work for
+  VML Yonder as an independent contractor). Removed the `twitter:site` @TerminalVelocityAI meta and the contact page
+  link to https://terminalvelocityai.tech/. Author and publisher stay VML Yonder. PHPUnit and the e2e page test now
+  assert no "Terminal Velocity" / "TerminalVelocity" and no link to terminalvelocityai.tech on every page. Hosting
+  names (*.terminalvelocityai.tech, cert paths, nginx conf names) are DNS, not branding, and are unchanged.
 - **Ticket loop** (owner's request, 2026-10-22, commit a8eef71, live 08:05 SAST): when the agent's tests fail, it proposes
   one ticket per failure; once a signed-in person replies "approve" in the thread, Claude Code fixes them on the same
   branch and the tests run again, up to 5 rounds, until nothing fails. New: `board_tickets` table and `BoardTicket` model,
@@ -84,6 +89,7 @@
 ### Test score log
 | Date (SAST) | PHPUnit | Pint | Playwright (3 browsers) | Notes |
 |---|---|---|---|---|
+| 2026-10-23 08:44 | 43/43 (430 assertions, 1.9 s) | pass | 99 passed, 0 failed, 2.4 min (main; the card-6 branch is 102/0) | Rebrand: twitter:site and the terminalvelocityai.tech contact link removed; no-branding assertions added |
 | 2026-10-20 | 68/68 | pass | 90 passed, 10 failed | The failures were in the WebKit CSP screenshot and the session race |
 | 2026-10-21 | 68/68 (596 assertions) | pass | 100 passed, 2 skipped (live only), 0 failed, 2.6 min | Fixed. The re-run of the menu tests was 9/9 |
 | 2026-10-21 15:04 | - | - | LIVE: 61 passed, 41 skipped, 0 failed, 5.3 min | `npm run e2e:live` against the deployed site |

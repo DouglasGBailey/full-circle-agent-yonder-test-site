@@ -41,7 +41,6 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:site" content="@TerminalVelocityAI">
 
     <script type="application/ld+json">{!! json_encode([
         '@context' => 'https://schema.org',
